@@ -18,11 +18,11 @@ struct StarData
 class StarTable
 {
 public:
-	StarTable(std::string & path);
+	StarTable();
 	~StarTable();
 
-private:
-	void ReadCSV(std::string & path);
+	bool ReadCSV(std::string& path);
 
+private:
 	std::vector<StarData> m_starDB;
 };

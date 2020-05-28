@@ -138,11 +138,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\CSVReader.cpp" />
     <ClCompile Include="Framework\ConfigReader.cpp" />
     <ClCompile Include="Framework\Hexwood.cpp" />
     <ClCompile Include="Framework\StarTable.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Framework\CSVReader.h" />
     <ClInclude Include="Framework\ConfigReader.h" />
     <ClInclude Include="Framework\StarTable.h" />
   </ItemGroup>

@@ -3,17 +3,15 @@
 #include <regex>
 #include <fstream>
 
-ConfigReader::ConfigReader(std::string & path)
+ConfigReader::ConfigReader()
 {
-	bool status = ReadCSV(path);
 }
 
 ConfigReader::~ConfigReader()
 {
-
 }
 
-bool ConfigReader::ReadCSV(std::string & path)
+bool ConfigReader::ReadConfig(std::string& path)
 {
 	std::string line;
 	std::ifstream myfile(path);
@@ -54,7 +52,7 @@ bool ConfigReader::ReadCSV(std::string & path)
   return true;
 }
 
-std::string ConfigReader::Get(std::string & section, std::string & key)
+std::string ConfigReader::Get(const std::string& section, const std::string& key)
 {
   if (m_config_map.count(section) > 0 && m_config_map[section].count(key) > 0)
   {
@@ -64,12 +62,12 @@ std::string ConfigReader::Get(std::string & section, std::string & key)
   return "";
 }
 
-int ConfigReader::GetInt(std::string & section, std::string & key)
+int ConfigReader::GetInt(const std::string& section, const std::string& key)
 {
   return std::stoi(Get(section, key));
 }
 
-float ConfigReader::GetFloat(std::string& section, std::string& key)
+float ConfigReader::GetFloat(const std::string& section, const std::string& key)
 {
   return std::stof(Get(section, key));
 }
