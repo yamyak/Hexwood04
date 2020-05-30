@@ -138,16 +138,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Framework\CSVReader.cpp" />
-    <ClCompile Include="Framework\ConfigReader.cpp" />
-    <ClCompile Include="Framework\Hexwood.cpp" />
+    <ClCompile Include="Reality\Object.cpp" />
+    <ClCompile Include="Reality\Star.cpp" />
+    <ClCompile Include="Utilities\CSVReader.cpp" />
+    <ClCompile Include="Utilities\ConfigReader.cpp" />
+    <ClCompile Include="Hexwood.cpp" />
     <ClCompile Include="Framework\StarTable.cpp" />
+    <ClCompile Include="Framework\RealityEngine.cpp" />
+    <ClCompile Include="Reality\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Framework\CSVReader.h" />
-    <ClInclude Include="Framework\ConfigReader.h" />
+    <ClInclude Include="Reality\Object.h" />
+    <ClInclude Include="Reality\Star.h" />
+    <ClInclude Include="Utilities\CSVReader.h" />
+    <ClInclude Include="Utilities\ConfigReader.h" />
     <ClInclude Include="Framework\StarTable.h" />
+    <ClInclude Include="Framework\RealityEngine.h" />
+    <ClInclude Include="Reality\Universe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

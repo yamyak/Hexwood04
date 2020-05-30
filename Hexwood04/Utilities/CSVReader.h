@@ -1,8 +1,8 @@
 #pragma once
 
-#include "StarTable.h"
-
 #include <set>
+#include <vector>
+#include <string>
 
 class CSVReader
 {

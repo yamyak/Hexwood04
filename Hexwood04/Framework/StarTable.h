@@ -22,6 +22,8 @@ public:
 	~StarTable();
 
 	bool ReadCSV(std::string& path);
+	int GetSize();
+	StarData GetStar(int index);
 
 private:
 	std::vector<StarData> m_starDB;

@@ -22,7 +22,11 @@ bool ConfigReader::ReadConfig(std::string& path)
     std::map<std::string, std::string> section_map;
     while (getline(myfile, line))
     {
-      if (std::regex_match(line.begin(), line.end(), std::regex("^\\[\\w+\\]$")))
+      if (std::regex_match(line.begin(), line.end(), std::regex("^#.*")))
+      {
+        continue;
+      }
+      else if (std::regex_match(line.begin(), line.end(), std::regex("^\\[\\w+\\]$")))
       {
         if (!first)
         {
@@ -70,4 +74,9 @@ int ConfigReader::GetInt(const std::string& section, const std::string& key)
 float ConfigReader::GetFloat(const std::string& section, const std::string& key)
 {
   return std::stof(Get(section, key));
+}
+
+bool ConfigReader::GetBool(const std::string& section, const std::string& key)
+{
+  return std::stoi(Get(section, key)) == 0 ? false : true;
 }

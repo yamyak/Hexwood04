@@ -1,5 +1,5 @@
 #include "StarTable.h"
-#include "CSVReader.h"
+#include "../Utilities/CSVReader.h"
 
 StarTable::StarTable()
 {
@@ -40,4 +40,14 @@ bool StarTable::ReadCSV(std::string& path)
 	}
 
 	return true;
+}
+
+int StarTable::GetSize()
+{
+	return (int)m_starDB.size();
+}
+
+StarData StarTable::GetStar(int index)
+{
+	return m_starDB[index];
 }
