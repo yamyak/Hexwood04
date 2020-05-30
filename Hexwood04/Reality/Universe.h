@@ -2,7 +2,7 @@
 
 #include "Star.h"
 
-#include <vector>
+#include <map>
 #include <mutex>
 
 class Universe
@@ -14,7 +14,7 @@ public:
 	void AddStar(Star& star);
 
 private:
-	std::vector<Star> m_stars;
-	std::mutex m_star_list_mutex;
+	std::map<int, Star> m_stars;
+	std::mutex m_star_mutex;
 };
 

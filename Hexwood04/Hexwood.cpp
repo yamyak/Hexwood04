@@ -15,30 +15,10 @@ void Creation(int seed, StarTable& starDB, int start, int end, Universe& verse)
 	bool status = engine.GenerateUniverse(verse, starDB, start, end);
 }
 
-int main()
+void UniverseCreation(int thread_count, StarTable& stars, Universe& verse)
 {
-	std::string config = "E:\\Projects\\Hexwood04\\Config.ini";
-	ConfigReader ini_reader;
-	ini_reader.ReadConfig(config);
-
-	StarTable stars;
-	stars.ReadCSV(*&ini_reader.Get(Constants::INITIALIZATION, Constants::STAR_DATABASE));
-
-	int thread_count = std::thread::hardware_concurrency();
-	if (ini_reader.GetBool(Constants::INITIALIZATION, Constants::MANUAL_THREADS))
-	{
-		thread_count = ini_reader.GetInt(Constants::INITIALIZATION, Constants::THREAD_COUNT);
-	}
-	thread_count = thread_count == 0 ? 1 : thread_count;
-
-	Universe verse;
-
-	srand(ini_reader.GetInt(Constants::INITIALIZATION, Constants::SEED));
-
 	int star_count = stars.GetSize();
 	int sector = star_count / thread_count;
-
-	auto t_start = std::chrono::high_resolution_clock::now();
 
 	std::vector<std::thread> threads;
 	for (int i = 0; i < thread_count; i++)
@@ -58,6 +38,28 @@ int main()
 	{
 		thr.join();
 	}
+}
+
+int main()
+{
+	std::string config = "E:\\Projects\\Hexwood04\\Config.ini";
+	ConfigReader::GetInstance()->ReadConfig(config);
+
+	StarTable stars;
+	stars.ReadCSV(*&ConfigReader::GetInstance()->Get(Constants::INITIALIZATION, Constants::STAR_DATABASE));
+
+	int thread_count = std::thread::hardware_concurrency();
+	if (ConfigReader::GetInstance()->GetBool(Constants::INITIALIZATION, Constants::MANUAL_THREADS))
+	{
+		thread_count = ConfigReader::GetInstance()->GetInt(Constants::INITIALIZATION, Constants::THREAD_COUNT);
+	}
+	thread_count = thread_count == 0 ? 1 : thread_count;
+
+	Universe verse;
+
+	srand(ConfigReader::GetInstance()->GetInt(Constants::INITIALIZATION, Constants::SEED));
+
+	UniverseCreation(thread_count, stars, verse);
 
 	return 0;
 }

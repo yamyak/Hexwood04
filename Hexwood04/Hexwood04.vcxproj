@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Reality\Planet.cpp" />
     <ClCompile Include="Reality\Object.cpp" />
     <ClCompile Include="Reality\Star.cpp" />
     <ClCompile Include="Utilities\CSVReader.cpp" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Reality\Planet.h" />
     <ClInclude Include="Reality\Object.h" />
     <ClInclude Include="Reality\Star.h" />
     <ClInclude Include="Utilities\CSVReader.h" />

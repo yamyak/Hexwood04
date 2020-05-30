@@ -12,6 +12,6 @@ Universe::~Universe()
 
 void Universe::AddStar(Star& star)
 {
-	std::lock_guard<std::mutex> guard(m_star_list_mutex);
-	m_stars.push_back(star);
+	std::lock_guard<std::mutex> guard(m_star_mutex);
+	m_stars[star.GetId()] = star;
 }

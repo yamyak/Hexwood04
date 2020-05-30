@@ -6,8 +6,9 @@
 class ConfigReader
 {
 public:
-	ConfigReader();
 	~ConfigReader();
+
+	static ConfigReader* GetInstance();
 
 	bool ReadConfig(std::string& path);
 
@@ -17,6 +18,9 @@ public:
 	bool GetBool(const std::string& section, const std::string& key);
 
 private:
+	static ConfigReader* m_instance;
 	std::map<std::string, std::map<std::string, std::string>> m_config_map;
+
+	ConfigReader();
 };
 

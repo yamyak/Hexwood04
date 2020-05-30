@@ -14,5 +14,6 @@ public:
 
 private:
 	Star GenerateStar(StarData& data);
+	void GenerateSystem(Star& star);
 };
 

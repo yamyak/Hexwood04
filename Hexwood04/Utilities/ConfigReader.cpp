@@ -3,12 +3,24 @@
 #include <regex>
 #include <fstream>
 
+ConfigReader* ConfigReader::m_instance = nullptr;
+
 ConfigReader::ConfigReader()
 {
 }
 
 ConfigReader::~ConfigReader()
 {
+}
+
+ConfigReader* ConfigReader::GetInstance()
+{
+  if (m_instance == nullptr)
+  {
+    m_instance = new ConfigReader();
+  }
+
+  return m_instance;
 }
 
 bool ConfigReader::ReadConfig(std::string& path)

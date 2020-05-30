@@ -22,19 +22,19 @@ bool StarTable::ReadCSV(std::string& path)
 	StarData star;
 	for (auto row : data)
 	{
-		if (row[4].empty() || std::stof(row[2]) > 100000)
+		if (row[4].empty() || std::stof(row[2]) >= 100000)
 		{
 			continue;
 		}
 
 		star.id = std::stoi(row[0]);
 		star.name = row[1];
-		star.dist = std::stof(row[2]);
+		star.dist = std::stof(row[2]) * 3.262f * 9.461e12f;
 		star.am = std::stof(row[3]);
 		star.ci = std::stof(row[4]);
-		star.x = std::stof(row[5]);
-		star.y = std::stof(row[6]);
-		star.z = std::stof(row[7]);
+		star.x = std::stof(row[5]) * 3.262f * 9.461e12f;
+		star.y = std::stof(row[6]) * 3.262f * 9.461e12f;
+		star.z = std::stof(row[7]) * 3.262f * 9.461e12f;
 
 		m_starDB.push_back(star);
 	}

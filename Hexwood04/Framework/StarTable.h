@@ -7,12 +7,12 @@ struct StarData
 {
 	int id;
 	std::string name;
-	double x;
-	double y;
-	double z;
-	double ci;
-	double am;
-	double dist;
+	float x;
+	float y;
+	float z;
+	float ci;
+	float am;
+	float dist;
 };
 
 class StarTable
