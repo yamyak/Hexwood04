@@ -20,7 +20,7 @@ bool StarTable::ReadCSV(std::string& path)
 	m_starDB.reserve(data.size());
 
 	StarData star;
-	for (auto row : data)
+	for (auto& row : data)
 	{
 		if (row[4].empty() || std::stof(row[2]) >= 100000)
 		{

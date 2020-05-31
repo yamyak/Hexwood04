@@ -23,7 +23,7 @@ void UniverseCreation(int thread_count, StarTable& stars, Universe& verse)
 	std::vector<std::thread> threads;
 	for (int i = 0; i < thread_count; i++)
 	{
-		int seed = rand() % 1000;
+		int seed = rand();
 		int start = i * sector;
 		int end = (i + 1) * sector;
 		if (i == thread_count - 1)

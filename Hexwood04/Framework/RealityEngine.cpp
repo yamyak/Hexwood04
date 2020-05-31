@@ -1,13 +1,24 @@
 #include "RealityEngine.h"
 #include "../Constants.h"
 #include "../Utilities/ConfigReader.h"
-#include "../Reality/Planet.h"
 
 #include <cstdlib>
+
+
+using namespace Constants;
 
 RealityEngine::RealityEngine(int seed)
 {
 	srand(seed);
+	m_max_planets = ConfigReader::GetInstance()->GetInt(Constants::SOLAR_SYSTEM, Constants::MAX_PLANETS);
+	m_gas_giant_min_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::GAS_GIANT_MIN_SIZE);
+	m_gas_giant_max_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::GAS_GIANT_MAX_SIZE);
+	m_terrestrial_min_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::TERRESTRIAL_MIN_SIZE);
+	m_terrestrial_max_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::TERRESTRIAL_MAX_SIZE);
+	m_planet_resources = ConfigReader::GetInstance()->GetFloatArray(Constants::SOLAR_SYSTEM, Constants::PLANET_RESOURCES);
+	m_resource_modifiers = ConfigReader::GetInstance()->GetFloatArray(Constants::SOLAR_SYSTEM, Constants::RESOURCE_MODIFIERS);
+	m_generator.seed(rand());
+	m_distribution.param(std::normal_distribution<float>::param_type(0, ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::RESOURCE_SIGMA)));
 }
 
 RealityEngine::~RealityEngine()
@@ -21,9 +32,7 @@ bool RealityEngine::GenerateUniverse(Universe& verse, StarTable& starDB, int sta
 	{
 		StarData data = starDB.GetStar(i);
 
-		Star star = GenerateStar(data);
-
-		GenerateSystem(star);
+		Star star = GenerateSystem(data);
 
 		verse.AddStar(star);
 	}
@@ -31,28 +40,53 @@ bool RealityEngine::GenerateUniverse(Universe& verse, StarTable& starDB, int sta
 	return true;
 }
 
-Star RealityEngine::GenerateStar(StarData& data)
+Star RealityEngine::GenerateSystem(StarData& data)
 {
 	Star star(data.id, data.name, data.x, data.y, data.z);
+
+	int planet_number = rand() % m_max_planets;
+
+	for (int i = 0; i < planet_number; i++)
+	{
+		PlanetType type = (PlanetType)(rand() % (int)PlanetType::TYPE_MAX);
+
+		PlanetEnvironment env = PlanetEnvironment::NONE;
+		if (type == PlanetType::TERRESTRIAL)
+		{
+			env = (PlanetEnvironment)(rand() % ((int)PlanetEnvironment::ENVIRONMENT_MAX - 1) + 1);
+		}
+
+		std::vector<Resource> resources;
+		resources.push_back(GenerateResource(ResourceType::NATURAL_GAS, type, env));
+		resources.push_back(GenerateResource(ResourceType::BIOMASS, type, env));
+		resources.push_back(GenerateResource(ResourceType::FOSSIL_FUELS, type, env));
+		resources.push_back(GenerateResource(ResourceType::HEAVY_METALS, type, env));
+		resources.push_back(GenerateResource(ResourceType::WATER, type, env));
+		resources.push_back(GenerateResource(ResourceType::RADIOACTIVE, type, env));
+
+		Planet planet(i, type, env, resources);
+		star.AddPlanet(planet);
+	}
 
 	return star;
 }
 
-void RealityEngine::GenerateSystem(Star& star)
+Resource RealityEngine::GenerateResource(ResourceType type, PlanetType planet, PlanetEnvironment env)
 {
-	int planet_number = rand() % ConfigReader::GetInstance()->GetInt(Constants::SOLAR_SYSTEM, Constants::MAX_PLANETS);;
+	float base = m_planet_resources[(int)type][(int)planet];
+	base *= (1 + m_distribution(m_generator) / 100);
 
-	for (int i = 0; i < planet_number; i++)
+	if (planet == PlanetType::TERRESTRIAL)
 	{
-		PlanetType type = (PlanetType) (rand() % TYPE_MAX);
-
-		PlanetEnvironment env = NONE;
-		if (type == TERRESTRIAL)
-		{
-			env = (PlanetEnvironment)(rand() % (ENVIRONMENT_MAX - 1) + 1);
-		}
-
-		Planet planet(i, type, env);
-		star.AddPlanet(planet);
+		float mod = m_resource_modifiers[(int)type][(int)env - 1];
+		mod *= (1 + m_distribution(m_generator) / 100);
+		base *= (1 + mod / 100);
 	}
+
+	Resource r;
+	r.m_type = type;
+	r.m_current = (base < 0) ? 0 : base;
+	r.m_max = r.m_current;
+
+	return r;
 }
