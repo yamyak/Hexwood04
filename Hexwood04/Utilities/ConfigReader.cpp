@@ -53,12 +53,12 @@ bool ConfigReader::ReadConfig(std::string& path)
         section_map.clear();
         first = false;
       }
-      else if (std::regex_match(line.begin(), line.end(), std::regex("^{\\w+}$")))
+      else if (std::regex_match(line.begin(), line.end(), std::regex("^\\{\\w+\\}$")))
       {
         if (array)
         {
           array_name = line.substr(1, line.size() - 2);
-          section_map[array_name] = array_line.substr(0, line.size()-1);
+          section_map[array_name] = array_line.substr(0, array_line.size()-1);
         }
         else
         {
@@ -125,7 +125,7 @@ std::vector<std::vector<float>> ConfigReader::GetFloatArray(const std::string& s
   std::vector<std::string> tokens;
 
   std::string temp;
-  while (getline(ss, temp, ','))
+  while (getline(ss, temp, ';'))
   {
     tokens.push_back(temp);
   }
