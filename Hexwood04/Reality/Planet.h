@@ -22,6 +22,7 @@ public:
 	~Planet();
 
 	int GetId();
+	bool Run();
 
 private:
 	int m_id;

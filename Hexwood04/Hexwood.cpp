@@ -2,43 +2,11 @@
 #include "Utilities/ConfigReader.h"
 #include "Framework/StarTable.h"
 #include "Framework/RealityEngine.h"
-#include "Reality/Universe.h"
 
-#include <thread>
-#include <cstdlib>
 #include <chrono>
+#include <iostream>
+#include <fstream>
 
-void Creation(int seed, StarTable& starDB, int start, int end, Universe& verse)
-{
-	RealityEngine engine(seed);
-
-	bool status = engine.GenerateUniverse(verse, starDB, start, end);
-}
-
-void UniverseCreation(int thread_count, StarTable& stars, Universe& verse)
-{
-	int star_count = stars.GetSize();
-	int sector = star_count / thread_count;
-
-	std::vector<std::thread> threads;
-	for (int i = 0; i < thread_count; i++)
-	{
-		int seed = rand();
-		int start = i * sector;
-		int end = (i + 1) * sector;
-		if (i == thread_count - 1)
-		{
-			end += star_count % thread_count;
-		}
-
-		threads.push_back(std::thread(Creation, seed, std::ref(stars), start, end, std::ref(verse)));
-	}
-
-	for (auto& thr : threads)
-	{
-		thr.join();
-	}
-}
 
 int main()
 {
@@ -55,11 +23,23 @@ int main()
 	}
 	thread_count = thread_count == 0 ? 1 : thread_count;
 
-	Universe verse;
-
 	srand(ConfigReader::GetInstance()->GetInt(Constants::INITIALIZATION, Constants::SEED));
 
-	UniverseCreation(thread_count, stars, verse);
+	Universe verse;
+
+	auto start = std::chrono::high_resolution_clock::now();
+
+	Create(thread_count, stars, verse);
+
+	auto stop = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+
+	std::ofstream myfile("example.txt");
+	if (myfile.is_open())
+	{
+		myfile << duration.count() << std::endl;
+		myfile.close();
+	}
 
 	return 0;
 }

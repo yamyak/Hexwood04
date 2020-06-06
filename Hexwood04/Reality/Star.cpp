@@ -1,5 +1,6 @@
 #include "Star.h"
 
+
 Star::Star()
 {
 
@@ -23,4 +24,9 @@ int Star::GetId()
 void Star::AddPlanet(Planet& planet)
 {
 	m_planets[planet.GetId()] = planet;
+}
+
+bool Star::Run()
+{
+	return true;
 }

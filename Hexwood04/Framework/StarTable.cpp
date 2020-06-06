@@ -1,8 +1,10 @@
 #include "StarTable.h"
 #include "../Utilities/CSVReader.h"
 
+
 StarTable::StarTable()
 {
+
 }
 
 StarTable::~StarTable()

@@ -1,17 +1,18 @@
 #pragma once
 
+#include "Object.h"
 #include "Star.h"
 
-#include <map>
 #include <mutex>
 
-class Universe
+class Universe : public Object
 {
 public:
 	Universe();
 	~Universe();
 
 	void AddStar(Star& star);
+	bool Run();
 
 private:
 	std::map<int, Star> m_stars;

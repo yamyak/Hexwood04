@@ -3,7 +3,6 @@
 #include "Object.h"
 #include "Planet.h"
 
-#include <string>
 #include <map>
 
 class Star : public Object
@@ -15,6 +14,7 @@ public:
 
 	int GetId();
 	void AddPlanet(Planet& planet);
+	bool Run();
 
 private:
 	int m_id;

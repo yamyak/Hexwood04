@@ -141,6 +141,7 @@
     <ClCompile Include="Reality\Planet.cpp" />
     <ClCompile Include="Reality\Object.cpp" />
     <ClCompile Include="Reality\Star.cpp" />
+    <ClCompile Include="Reality\SpaceTime.cpp" />
     <ClCompile Include="Utilities\CSVReader.cpp" />
     <ClCompile Include="Utilities\ConfigReader.cpp" />
     <ClCompile Include="Hexwood.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Reality\Planet.h" />
     <ClInclude Include="Reality\Object.h" />
     <ClInclude Include="Reality\Star.h" />
+    <ClInclude Include="Reality\SpaceTime.h" />
     <ClInclude Include="Utilities\CSVReader.h" />
     <ClInclude Include="Utilities\ConfigReader.h" />
     <ClInclude Include="Framework\StarTable.h" />

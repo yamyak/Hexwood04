@@ -1,5 +1,6 @@
 #include "Planet.h"
 
+
 Planet::Planet()
 {
 	m_id = 0;
@@ -20,4 +21,9 @@ Planet::~Planet()
 int Planet::GetId()
 {
 	return m_id;
+}
+
+bool Planet::Run()
+{
+	return true;
 }

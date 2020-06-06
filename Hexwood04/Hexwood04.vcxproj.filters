@@ -42,6 +42,9 @@
     <ClCompile Include="Reality\Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Reality\SpaceTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\StarTable.h">
@@ -69,6 +72,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Reality\Planet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reality\SpaceTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
