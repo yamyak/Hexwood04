@@ -5,17 +5,15 @@
 
 #include <random>
 
-class Universe;
-class StarTable;
-
 void Create(int thread_count, StarTable& stars, Universe& verse);
 
-class RealityEngine
+class SpaceEngine
 {
 public:
-	RealityEngine(int seed);
-	~RealityEngine();
+	SpaceEngine(int seed);
+	~SpaceEngine();
 
+	static void Create_Thread(int seed, Universe& verse, StarTable& starDB, int start, int end);
 	bool CreateUniverse(Universe& verse, StarTable& starDB, int start, int end);
 
 private:

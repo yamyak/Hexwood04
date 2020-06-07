@@ -7,5 +7,10 @@ public:
 	~Object();
 
 	virtual bool Run() = 0;
+	int GetId();
+	void SetId(int id);
+
+private:
+	int m_id;
 };
 

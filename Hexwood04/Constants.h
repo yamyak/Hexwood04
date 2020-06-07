@@ -20,6 +20,10 @@ namespace Constants
 	const std::string PLANET_RESOURCES = "planet_resource_values";
 	const std::string RESOURCE_MODIFIERS = "planet_resource_modifiers";
 
+	const std::string EMPIRE = "EMPIRE";
+	const std::string AVERAGE_EMPIRES = "average_empires";
+	const std::string EMPIRE_SIGMA = "empire_sigma";
+
 	enum class PlanetType
 	{
 		TERRESTRIAL = 0,

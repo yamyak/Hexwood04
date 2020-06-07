@@ -17,15 +17,16 @@ struct Resource
 class Planet :	public Object
 {
 public:
-	Planet();
+	inline Planet() {};
 	Planet(int id, PlanetType type, PlanetEnvironment env, std::vector<Resource>& resources);
 	~Planet();
 
-	int GetId();
 	bool Run();
+	void SetOccupied(bool status);
+	bool GetOccupied();
 
 private:
-	int m_id;
+	bool m_occupied;
 	PlanetType m_type;
 	PlanetEnvironment m_environment;
 	std::vector<Resource> m_resources;

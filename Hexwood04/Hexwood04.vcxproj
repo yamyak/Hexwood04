@@ -138,27 +138,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Reality\Colony.cpp" />
+    <ClCompile Include="Reality\Empire.cpp" />
+    <ClCompile Include="Framework\LifeEngine.cpp" />
     <ClCompile Include="Reality\Planet.cpp" />
     <ClCompile Include="Reality\Object.cpp" />
     <ClCompile Include="Reality\Star.cpp" />
     <ClCompile Include="Reality\SpaceTime.cpp" />
+    <ClCompile Include="Reality\Ship.cpp" />
     <ClCompile Include="Utilities\CSVReader.cpp" />
     <ClCompile Include="Utilities\ConfigReader.cpp" />
     <ClCompile Include="Hexwood.cpp" />
     <ClCompile Include="Framework\StarTable.cpp" />
-    <ClCompile Include="Framework\RealityEngine.cpp" />
+    <ClCompile Include="Framework\SpaceEngine.cpp" />
     <ClCompile Include="Reality\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Reality\Colony.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Reality\Empire.h" />
+    <ClInclude Include="Framework\LifeEngine.h" />
     <ClInclude Include="Reality\Planet.h" />
     <ClInclude Include="Reality\Object.h" />
     <ClInclude Include="Reality\Star.h" />
     <ClInclude Include="Reality\SpaceTime.h" />
+    <ClInclude Include="Reality\Ship.h" />
     <ClInclude Include="Utilities\CSVReader.h" />
     <ClInclude Include="Utilities\ConfigReader.h" />
     <ClInclude Include="Framework\StarTable.h" />
-    <ClInclude Include="Framework\RealityEngine.h" />
+    <ClInclude Include="Framework\SpaceEngine.h" />
     <ClInclude Include="Reality\Universe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

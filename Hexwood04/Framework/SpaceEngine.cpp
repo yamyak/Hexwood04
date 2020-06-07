@@ -1,17 +1,10 @@
-#include "RealityEngine.h"
+#include "SpaceEngine.h"
 #include "../Utilities/ConfigReader.h"
 
 #include <thread>
 
 
 using namespace Constants;
-
-static void Create_Thread(int seed, Universe& verse, StarTable& starDB, int start, int end)
-{
-	RealityEngine engine(seed);
-
-	bool status = engine.CreateUniverse(verse, starDB, start, end);
-}
 
 void Create(int thread_count, StarTable& stars, Universe& verse)
 {
@@ -28,7 +21,7 @@ void Create(int thread_count, StarTable& stars, Universe& verse)
 			end += star_count % thread_count;
 		}
 
-		threads.push_back(std::thread(Create_Thread, rand(), std::ref(verse), std::ref(stars), start, end));
+		threads.push_back(std::thread(&SpaceEngine::Create_Thread, rand(), std::ref(verse), std::ref(stars), start, end));
 	}
 
 	for (auto& thr : threads)
@@ -37,7 +30,7 @@ void Create(int thread_count, StarTable& stars, Universe& verse)
 	}
 }
 
-RealityEngine::RealityEngine(int seed)
+SpaceEngine::SpaceEngine(int seed)
 {
 	m_max_planets = ConfigReader::GetInstance()->GetInt(Constants::SOLAR_SYSTEM, Constants::MAX_PLANETS);
 	m_gas_giant_min_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::GAS_GIANT_MIN_SIZE);
@@ -51,12 +44,19 @@ RealityEngine::RealityEngine(int seed)
 	m_normal_dist.param(std::normal_distribution<float>::param_type(0, ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::RESOURCE_SIGMA)));
 }
 
-RealityEngine::~RealityEngine()
+SpaceEngine::~SpaceEngine()
 {
 
 }
 
-bool RealityEngine::CreateUniverse(Universe& verse, StarTable& starDB, int start, int end)
+void SpaceEngine::Create_Thread(int seed, Universe& verse, StarTable& starDB, int start, int end)
+{
+	SpaceEngine engine(seed);
+
+	bool status = engine.CreateUniverse(verse, starDB, start, end);
+}
+
+bool SpaceEngine::CreateUniverse(Universe& verse, StarTable& starDB, int start, int end)
 {
 	for (int i = start; i < end; i++)
 	{
@@ -70,7 +70,7 @@ bool RealityEngine::CreateUniverse(Universe& verse, StarTable& starDB, int start
 	return true;
 }
 
-Star RealityEngine::CreateSystem(StarData& data)
+Star SpaceEngine::CreateSystem(StarData& data)
 {
 	Star star(data.id, data.name, data.x, data.y, data.z);
 
@@ -101,7 +101,7 @@ Star RealityEngine::CreateSystem(StarData& data)
 	return star;
 }
 
-Resource RealityEngine::CreateResource(ResourceType type, PlanetType planet, PlanetEnvironment env)
+Resource SpaceEngine::CreateResource(ResourceType type, PlanetType planet, PlanetEnvironment env)
 {
 	float base = m_planet_resources[(int)type][(int)planet];
 	base *= (1 + m_normal_dist(m_generator) / 100);

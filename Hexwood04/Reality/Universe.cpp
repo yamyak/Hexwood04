@@ -21,3 +21,18 @@ bool Universe::Run()
 {
 	return true;
 }
+
+int Universe::GetSize()
+{
+	return (int)m_stars.size();
+}
+
+Star& Universe::GetStar(int index)
+{
+	return m_stars[index];
+}
+
+void Universe::AddEmpire(Empire& empire)
+{
+	m_empires[empire.GetId()] = empire;
+}
