@@ -1,8 +1,10 @@
 #include "Colony.h"
 
-Colony::Colony(int id, Planet* planet) : m_planet(planet)
+std::atomic<int> Colony::m_global_id = 0;
+
+Colony::Colony(Planet* planet) : m_empire_id(0), m_planet(planet)
 {
-	SetId(id);
+	SetId(m_global_id++);
 }
 
 Colony::~Colony()
@@ -13,4 +15,14 @@ Colony::~Colony()
 bool Colony::Run()
 {
 	return false;
+}
+
+int Colony::GetEmpireId()
+{
+	return m_empire_id;
+}
+
+void Colony::SetEmpireId(int id)
+{
+	m_empire_id = id;
 }

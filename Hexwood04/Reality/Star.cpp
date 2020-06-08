@@ -11,9 +11,9 @@ Star::~Star()
 
 }
 
-void Star::AddPlanet(Planet& planet)
+void Star::AddPlanet(Planet* planet)
 {
-	m_planets[planet.GetId()] = planet;
+	m_planets[planet->GetSystemId()] = planet;
 }
 
 bool Star::Run()
@@ -26,7 +26,7 @@ int Star::GetSystemSize()
 	return (int)m_planets.size();
 }
 
-Planet& Star::GetPlanet(int index)
+Planet* Star::GetPlanet(int key)
 {
-	return m_planets[index];
+	return m_planets[key];
 }

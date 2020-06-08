@@ -4,6 +4,7 @@
 #include "../Constants.h"
 
 #include <vector>
+#include <atomic>
 
 using namespace Constants;
 
@@ -22,13 +23,14 @@ public:
 	~Planet();
 
 	bool Run();
-	void SetOccupied(bool status);
-	bool GetOccupied();
+	bool SetOccupied();
+	int GetSystemId();
 
 private:
+	static std::atomic<int> m_global_id;
+	int m_system_id;
 	bool m_occupied;
 	PlanetType m_type;
 	PlanetEnvironment m_environment;
 	std::vector<Resource> m_resources;
 };
-

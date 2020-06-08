@@ -13,9 +13,9 @@ public:
 	~Empire();
 
 	bool Run();
-	void AddColony(Colony& colony);
+	void AddColony(Colony* colony);
 
 private:
-	std::map<int, Colony> m_colonies;
+	std::map<int, Colony*> m_colonies;
 };
 

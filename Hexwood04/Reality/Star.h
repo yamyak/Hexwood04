@@ -12,9 +12,9 @@ public:
 	Star(int id, std::string& name, float x, float y, float z);
 	~Star();
 
-	void AddPlanet(Planet& planet);
+	void AddPlanet(Planet* planet);
 	int GetSystemSize();
-	Planet& GetPlanet(int index);
+	Planet* GetPlanet(int key);
 	bool Run();
 
 private:
@@ -22,6 +22,6 @@ private:
 	float m_y;
 	float m_z;
 	std::string m_name;
-	std::map<int, Planet> m_planets;
+	std::map<int, Planet*> m_planets;
 };
 

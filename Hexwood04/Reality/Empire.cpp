@@ -15,7 +15,8 @@ bool Empire::Run()
 	return false;
 }
 
-void Empire::AddColony(Colony& colony)
+void Empire::AddColony(Colony* colony)
 {
-	m_colonies[(int)m_colonies.size()] = colony;
+	colony->SetEmpireId((int)m_colonies.size());
+	m_colonies[colony->GetEmpireId()] = colony;
 }

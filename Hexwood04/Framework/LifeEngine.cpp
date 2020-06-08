@@ -34,14 +34,14 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 			if (number_planets > 0)
 			{
 				index = m_uniform_dist(m_generator) % number_planets;
-				Planet& planet = star.GetPlanet(index);
+				Planet* planet = star.GetPlanet(index);
 
-				if (!planet.GetOccupied())
+				if (planet->SetOccupied())
 				{
 					Empire empire(i);
-					Colony colony(0, &planet);
-					empire.AddColony(colony);
-					planet.SetOccupied(true);
+					Colony colony(planet);
+					Colony* colony_ptr = verse.AddColony(colony);
+					empire.AddColony(colony_ptr);
 
 					verse.AddEmpire(empire);
 
