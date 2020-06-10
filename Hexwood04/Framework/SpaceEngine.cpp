@@ -62,7 +62,7 @@ bool SpaceEngine::CreateUniverse(Universe& verse, StarTable& starDB, int start, 
 	{
 		StarData data = starDB.GetStar(i);
 
-		Star star = CreateSystem(verse, data);
+		Star* star = CreateSystem(verse, data);
 
 		verse.AddStar(star);
 	}
@@ -70,9 +70,9 @@ bool SpaceEngine::CreateUniverse(Universe& verse, StarTable& starDB, int start, 
 	return true;
 }
 
-Star SpaceEngine::CreateSystem(Universe& verse, StarData& data)
+Star* SpaceEngine::CreateSystem(Universe& verse, StarData& data)
 {
-	Star star(data.id, data.name, data.x, data.y, data.z);
+	Star* star = new Star(data.id, data.name, data.x, data.y, data.z);
 
 	int planet_number = m_uniform_dist(m_generator) % m_max_planets;
 
@@ -94,10 +94,10 @@ Star SpaceEngine::CreateSystem(Universe& verse, StarData& data)
 		resources.push_back(CreateResource(ResourceType::WATER, type, env));
 		resources.push_back(CreateResource(ResourceType::RADIOACTIVE, type, env));
 
-		Planet planet(i, type, env, resources);
-		Planet* planet_ptr = verse.AddPlanet(planet);
+		Planet* planet = new Planet(i, type, env, resources);
+		verse.AddPlanet(planet);
 
-		star.AddPlanet(planet_ptr);
+		star->AddPlanet(planet);
 	}
 
 	return star;

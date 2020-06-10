@@ -28,20 +28,20 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 		while (!planet_found)
 		{
 			index = m_uniform_dist(m_generator) % number_stars;
-			Star& star = verse.GetStar(index);
+			Star* star = verse.GetStar(index);
 
-			number_planets = star.GetSystemSize();
+			number_planets = star->GetSystemSize();
 			if (number_planets > 0)
 			{
 				index = m_uniform_dist(m_generator) % number_planets;
-				Planet* planet = star.GetPlanet(index);
+				Planet* planet = star->GetPlanet(index);
 
 				if (planet->SetOccupied())
 				{
-					Empire empire(i);
-					Colony colony(planet);
-					Colony* colony_ptr = verse.AddColony(colony);
-					empire.AddColony(colony_ptr);
+					Empire* empire = new Empire(i);
+					Colony* colony = new Colony(planet);
+					verse.AddColony(colony);
+					empire->AddColony(colony);
 
 					verse.AddEmpire(empire);
 
@@ -50,6 +50,4 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 			}
 		}
 	}
-
-
 }

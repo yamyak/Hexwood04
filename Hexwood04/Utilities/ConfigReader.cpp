@@ -13,6 +13,8 @@ ConfigReader::ConfigReader()
 
 ConfigReader::~ConfigReader()
 {
+  delete m_instance;
+  m_instance = nullptr;
 }
 
 ConfigReader* ConfigReader::GetInstance()

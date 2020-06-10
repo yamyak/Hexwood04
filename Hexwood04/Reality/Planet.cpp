@@ -19,6 +19,8 @@ bool Planet::Run()
 
 bool Planet::SetOccupied()
 {
+	Lock();
+
 	if (m_occupied)
 	{
 		return false;
@@ -28,6 +30,8 @@ bool Planet::SetOccupied()
 		m_occupied = true;
 		return true;
 	}
+
+	Unlock();
 }
 
 int Planet::GetSystemId()

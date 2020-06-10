@@ -17,6 +17,10 @@ bool Empire::Run()
 
 void Empire::AddColony(Colony* colony)
 {
+	Lock();
+
 	colony->SetEmpireId((int)m_colonies.size());
 	m_colonies[colony->GetEmpireId()] = colony;
+
+	Unlock();
 }

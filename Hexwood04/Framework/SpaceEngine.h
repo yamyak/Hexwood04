@@ -29,7 +29,7 @@ private:
 	std::uniform_int_distribution<int> m_uniform_dist;
 	std::normal_distribution<float> m_normal_dist;
 
-	Star CreateSystem(Universe& verse, StarData& data);
+	Star* CreateSystem(Universe& verse, StarData& data);
 	Resource CreateResource(ResourceType type, PlanetType planet, PlanetEnvironment env);
 };
 

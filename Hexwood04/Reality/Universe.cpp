@@ -11,34 +11,30 @@ Universe::~Universe()
 
 }
 
-Star* Universe::AddStar(Star& star)
+void Universe::AddStar(Star* star)
 {
 	std::lock_guard<std::mutex> guard(m_star_mutex);
 
-	m_stars[star.GetId()] = star;
-	return &m_stars[star.GetId()];
+	m_stars[star->GetId()] = star;
 }
 
-Planet* Universe::AddPlanet(Planet& planet)
+void Universe::AddPlanet(Planet* planet)
 {
 	std::lock_guard<std::mutex> guard(m_planet_mutex);
 
-	m_planets[planet.GetId()] = planet;
-	return &m_planets[planet.GetId()];
+	m_planets[planet->GetId()] = planet;
 }
 
-Empire* Universe::AddEmpire(Empire& empire)
+void Universe::AddEmpire(Empire* empire)
 {
-	m_empires[empire.GetId()] = empire;
-	return &m_empires[empire.GetId()];
+	m_empires[empire->GetId()] = empire;
 }
 
-Colony* Universe::AddColony(Colony& colony)
+void Universe::AddColony(Colony* colony)
 {
 	std::lock_guard<std::mutex> guard(m_colony_mutex);
 
-	m_colonies[colony.GetId()] = colony;
-	return &m_colonies[colony.GetId()];
+	m_colonies[colony->GetId()] = colony;
 }
 
 bool Universe::Run()
@@ -51,7 +47,7 @@ int Universe::GetSize()
 	return (int)m_stars.size();
 }
 
-Star& Universe::GetStar(int key)
+Star* Universe::GetStar(int key)
 {
 	return m_stars[key];
 }

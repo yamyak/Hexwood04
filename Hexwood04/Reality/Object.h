@@ -16,7 +16,7 @@ public:
 
 private:
 	int m_id;
-	//std::mutex m_object_mutex;
-	//std::unique_lock<std::mutex> m_lock;
+	std::mutex m_object_mutex;
+	std::unique_lock<std::mutex> m_lock;
 };
 
