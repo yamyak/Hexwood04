@@ -9,11 +9,11 @@ class Planet;
 class Colony : public Object
 {
 public:
-	inline Colony() {};
+	inline Colony() : m_empire_id(0), m_planet(nullptr) {};
 	Colony(Planet* planet);
 	~Colony();
 
-	bool Run();
+	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
 	void SetEmpireId(int id);
 	int GetEmpireId();
 

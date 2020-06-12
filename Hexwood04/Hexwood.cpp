@@ -3,6 +3,7 @@
 #include "Framework/StarTable.h"
 #include "Framework/SpaceEngine.h"
 #include "Framework/LifeEngine.h"
+#include "Framework/TimeEngine.h"
 
 #include <chrono>
 #include <iostream>
@@ -30,7 +31,8 @@ int main()
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	Create(thread_count, stars, verse);
+	SpaceEngine spaceEngine;
+	spaceEngine.Create(thread_count, stars, verse);
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
@@ -41,6 +43,12 @@ int main()
 		myfile << duration.count() << std::endl;
 		myfile.close();
 	}
+
+	LifeEngine lifeEngine(rand());
+	lifeEngine.CreateEmpires(verse);
+
+	TimeEngine timeEngine(static_cast<Object*>(&verse));
+	timeEngine.Start(thread_count);
 
 	return 0;
 }

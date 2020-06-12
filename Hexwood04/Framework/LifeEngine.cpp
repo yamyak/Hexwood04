@@ -50,4 +50,6 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 			}
 		}
 	}
+
+	return true;
 }

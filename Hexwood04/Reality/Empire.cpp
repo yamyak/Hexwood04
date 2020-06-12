@@ -10,7 +10,7 @@ Empire::~Empire()
 
 }
 
-bool Empire::Run()
+bool Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	return false;
 }
@@ -23,4 +23,9 @@ void Empire::AddColony(Colony* colony)
 	m_colonies[colony->GetEmpireId()] = colony;
 
 	Unlock();
+}
+
+std::map<int, Colony*>& Empire::GetColonies()
+{
+	return m_colonies;
 }

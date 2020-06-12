@@ -144,7 +144,7 @@
     <ClCompile Include="Reality\Planet.cpp" />
     <ClCompile Include="Reality\Object.cpp" />
     <ClCompile Include="Reality\Star.cpp" />
-    <ClCompile Include="Reality\SpaceTime.cpp" />
+    <ClCompile Include="Framework\SpaceThread.cpp" />
     <ClCompile Include="Reality\Ship.cpp" />
     <ClCompile Include="Framework\TimeEngine.cpp" />
     <ClCompile Include="Utilities\CSVReader.cpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="Reality\Planet.h" />
     <ClInclude Include="Reality\Object.h" />
     <ClInclude Include="Reality\Star.h" />
-    <ClInclude Include="Reality\SpaceTime.h" />
+    <ClInclude Include="Framework\SpaceThread.h" />
     <ClInclude Include="Reality\Ship.h" />
     <ClInclude Include="Framework\TimeEngine.h" />
     <ClInclude Include="Utilities\CSVReader.h" />

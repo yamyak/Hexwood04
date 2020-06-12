@@ -1,7 +1,7 @@
 #include "TimeEngine.h"
 
 
-TimeEngine::TimeEngine(Object* obj) : m_base(obj), m_process_count(0)
+TimeEngine::TimeEngine(Object* obj) : m_process_count(0), m_base(obj)
 {
 
 }
@@ -11,36 +11,38 @@ TimeEngine::~TimeEngine()
 
 }
 
-void TimeEngine::IncProcessCount()
-{
-	std::lock_guard<std::mutex> lock(m_mutex);
-
-	m_process_count++;
-}
-
-void TimeEngine::DecProcessCount()
-{
-	std::lock_guard<std::mutex> lock(m_mutex);
-
-	m_process_count--;
-}
-
-void TimeEngine::StartSimulation()
+void TimeEngine::Start(int thread_count)
 {
 	m_queue.push(m_base);
 
-	while (true)
+	std::vector<std::thread> threads;
+	for (int i = 0; i < thread_count; i++)
 	{
-		ProcessFrame();
+		threads.push_back(std::thread(&TimeEngine::Start_Thread, std::ref(m_queue_mutex), std::ref(m_process_count), std::ref(m_queue)));
+	}
+
+	for (auto& thr : threads)
+	{
+		thr.join();
 	}
 }
 
-void TimeEngine::ProcessFrame()
+void TimeEngine::Start_Thread(std::mutex& mutex, std::atomic<int>& count, std::queue<Object*>& queue)
 {
-	while (!m_queue.empty() || m_process_count > 0)
+	while (!queue.empty() || count > 0)
 	{
-		Object* obj = m_queue.front();
-		obj->Run();
-		m_queue.pop();
+		if (count > 0)
+		{
+			count++;
+
+			std::unique_lock<std::mutex> lock(mutex);
+			Object* obj = queue.front();
+			queue.pop();
+			lock.unlock();
+
+			obj->Run(mutex, queue);
+
+			count--;
+		}
 	}
 }

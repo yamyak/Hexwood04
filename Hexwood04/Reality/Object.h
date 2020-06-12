@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <queue>
 
 class Object
 {
@@ -8,7 +9,7 @@ public:
 	Object();
 	~Object();
 
-	virtual bool Run() = 0;
+	virtual bool Run(std::mutex& mutex, std::queue<Object*>& queue) = 0;
 	int GetId();
 	void SetId(int id);
 	void Lock();

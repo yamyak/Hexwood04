@@ -18,11 +18,11 @@ struct Resource
 class Planet :	public Object
 {
 public:
-	inline Planet() {};
+	inline Planet() : m_system_id(0), m_occupied(false), m_type((PlanetType)0), m_environment((PlanetEnvironment)0) {};
 	Planet(int id, PlanetType type, PlanetEnvironment env, std::vector<Resource>& resources);
 	~Planet();
 
-	bool Run();
+	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
 	bool SetOccupied();
 	int GetSystemId();
 

@@ -12,7 +12,7 @@ Planet::~Planet()
 
 }
 
-bool Planet::Run()
+bool Planet::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	return true;
 }

@@ -12,7 +12,7 @@ Colony::~Colony()
 
 }
 
-bool Colony::Run()
+bool Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	return false;
 }

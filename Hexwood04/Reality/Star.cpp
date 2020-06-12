@@ -16,7 +16,7 @@ void Star::AddPlanet(Planet* planet)
 	m_planets[planet->GetSystemId()] = planet;
 }
 
-bool Star::Run()
+bool Star::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	return true;
 }

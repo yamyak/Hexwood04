@@ -3,7 +3,7 @@
 
 Object::Object()
 {
-
+	m_id = 0;
 }
 
 Object::~Object()

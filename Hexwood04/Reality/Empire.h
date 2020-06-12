@@ -12,8 +12,9 @@ public:
 	Empire(int id);
 	~Empire();
 
-	bool Run();
+	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
 	void AddColony(Colony* colony);
+	std::map<int, Colony*>& GetColonies();
 
 private:
 	std::map<int, Colony*> m_colonies;
