@@ -19,10 +19,17 @@ namespace Constants
 	const std::string RESOURCE_SIGMA = "resource_sigma";
 	const std::string PLANET_RESOURCES = "planet_resource_values";
 	const std::string RESOURCE_MODIFIERS = "planet_resource_modifiers";
+	const std::string RESOURCE_RECHARGE_RATE = "planet_resource_recharge_rate";
+	const std::string RECHARGE_RATE_SIGMA = "recharge_rate_sigma";
 
 	const std::string EMPIRE = "EMPIRE";
 	const std::string AVERAGE_EMPIRES = "average_empires";
 	const std::string EMPIRE_SIGMA = "empire_sigma";
+
+	const std::string COLONY = "COLONY";
+	const std::string RESOURCE_CONSUMPTION = "colony_resource_consumption";
+	const std::string COLONY_PERIOD_LENGTH = "colony_period_length";
+	const std::string COLONY_PERIOD_LENGTH_SIGMA = "colony_period_length_sigma";
 
 	enum class PlanetType
 	{
@@ -52,5 +59,16 @@ namespace Constants
 		WATER,
 		RADIOACTIVE,
 		RESOURCE_MAX
+	};
+
+	enum class CivilizationPeriod
+	{
+		PREHISTORY,
+		STONE_AGE,
+		METAL_AGE,
+		MACHINE_AGE,
+		ATOMIC_AGE,
+		SPACE_AGE,
+		PERIOD_MAX
 	};
 };

@@ -18,6 +18,7 @@ public:
 	float GetFloat(const std::string& section, const std::string& key);
 	bool GetBool(const std::string& section, const std::string& key);
 	std::vector<std::vector<float>> GetFloatArray(const std::string& section, const std::string& key);
+	std::vector<std::vector<int>> GetIntArray(const std::string& section, const std::string& key);
 
 private:
 	static ConfigReader* m_instance;

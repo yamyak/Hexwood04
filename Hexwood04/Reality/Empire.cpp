@@ -10,9 +10,17 @@ Empire::~Empire()
 
 }
 
-bool Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
+void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
-	return false;
+	Lock();
+
+	for (auto& colony : m_colonies)
+	{
+		std::lock_guard<std::mutex> queue_lock(mutex);
+		queue.push(static_cast<Object*>(colony.second));
+	}
+
+	Unlock();
 }
 
 void Empire::AddColony(Colony* colony)

@@ -15,7 +15,7 @@ public:
 	void AddPlanet(Planet* planet);
 	int GetSystemSize();
 	Planet* GetPlanet(int key);
-	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
+	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 
 private:
 	float m_x;

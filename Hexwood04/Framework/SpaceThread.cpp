@@ -2,7 +2,7 @@
 #include "../Utilities/ConfigReader.h"
 
 
-using namespace Constants;
+//using namespace Constants;
 
 SpaceThread::SpaceThread(int seed)
 {
@@ -13,9 +13,11 @@ SpaceThread::SpaceThread(int seed)
 	m_terrestrial_max_size = ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::TERRESTRIAL_MAX_SIZE);
 	m_planet_resources = ConfigReader::GetInstance()->GetFloatArray(Constants::SOLAR_SYSTEM, Constants::PLANET_RESOURCES);
 	m_resource_modifiers = ConfigReader::GetInstance()->GetFloatArray(Constants::SOLAR_SYSTEM, Constants::RESOURCE_MODIFIERS);
+	m_resource_recharge_rates = ConfigReader::GetInstance()->GetFloatArray(Constants::SOLAR_SYSTEM, Constants::RESOURCE_RECHARGE_RATE);
 	m_generator.seed(seed);
 	m_uniform_dist.param(std::uniform_int_distribution<int>::param_type(0, std::numeric_limits<int>::max()));
-	m_normal_dist.param(std::normal_distribution<float>::param_type(0, ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::RESOURCE_SIGMA)));
+	m_resource_normal_dist.param(std::normal_distribution<float>::param_type(0, ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::RESOURCE_SIGMA)));
+	m_recharge_normal_dist.param(std::normal_distribution<float>::param_type(0, ConfigReader::GetInstance()->GetFloat(Constants::SOLAR_SYSTEM, Constants::RECHARGE_RATE_SIGMA)));
 }
 
 SpaceThread::~SpaceThread()
@@ -73,19 +75,34 @@ Star* SpaceThread::CreateSystem(Universe& verse, StarData& data)
 Resource SpaceThread::CreateResource(ResourceType type, PlanetType planet, PlanetEnvironment env)
 {
 	float base = m_planet_resources[(int)type][(int)planet];
-	base *= (1 + m_normal_dist(m_generator) / 100);
+	base *= (1 + m_resource_normal_dist(m_generator) / 100);
 
 	if (planet == PlanetType::TERRESTRIAL)
 	{
 		float mod = m_resource_modifiers[(int)type][(size_t)env - 1];
-		mod *= (1 + m_normal_dist(m_generator) / 100);
+		mod *= (1 + m_resource_normal_dist(m_generator) / 100);
 		base *= (1 + mod / 100);
+	}
+
+	base = (base < 0) ? 0 : base;
+
+	float recharge_rate = 0;
+	if (base > 0)
+	{
+		recharge_rate = m_resource_recharge_rates[(int)type][(int)env];
+		if (recharge_rate > 0)
+		{
+			recharge_rate *= (1 + m_recharge_normal_dist(m_generator) / 100);
+
+			recharge_rate = (recharge_rate < 0) ? 0 : recharge_rate;
+		}
 	}
 
 	Resource r;
 	r.m_type = type;
-	r.m_current = (base < 0) ? 0 : base;
+	r.m_current = base;
 	r.m_max = r.m_current;
+	r.recharge_rate = recharge_rate;
 
 	return r;
 }

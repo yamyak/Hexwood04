@@ -18,7 +18,7 @@ public:
 	void AddColony(Colony* colony);
 	Star* GetStar(int key);
 	int GetSize();
-	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
+	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 
 private:
 	std::map<int, Star*> m_stars;

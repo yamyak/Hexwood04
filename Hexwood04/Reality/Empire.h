@@ -12,7 +12,7 @@ public:
 	Empire(int id);
 	~Empire();
 
-	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
+	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	void AddColony(Colony* colony);
 	std::map<int, Colony*>& GetColonies();
 

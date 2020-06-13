@@ -13,6 +13,7 @@ struct Resource
 	ResourceType m_type;
 	float m_max;
 	float m_current;
+	float recharge_rate;
 };
 
 class Planet :	public Object
@@ -22,7 +23,7 @@ public:
 	Planet(int id, PlanetType type, PlanetEnvironment env, std::vector<Resource>& resources);
 	~Planet();
 
-	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
+	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	bool SetOccupied();
 	int GetSystemId();
 

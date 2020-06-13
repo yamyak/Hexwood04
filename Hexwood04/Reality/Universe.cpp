@@ -39,26 +39,19 @@ void Universe::AddColony(Colony* colony)
 	m_colonies[colony->GetId()] = colony;
 }
 
-bool Universe::Run(std::mutex& mutex, std::queue<Object*>& queue)
+void Universe::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	Lock();
 
 	std::unique_lock<std::mutex> empire_lock(m_empire_mutex);
 	for (auto& empire : m_empires)
 	{
-		std::unique_lock<std::mutex> colony_lock(m_colony_mutex);
-		for (auto& colony : empire.second->GetColonies())
-		{
-			std::lock_guard<std::mutex> queue_lock(mutex);
-			queue.push(static_cast<Object*>(colony.second));
-		}
-		colony_lock.unlock();
+		std::lock_guard<std::mutex> queue_lock(mutex);
+		queue.push(static_cast<Object*>(empire.second));
 	}
 	empire_lock.unlock();
 
 	Unlock();
-
-	return true;
 }
 
 int Universe::GetSize()

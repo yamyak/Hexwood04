@@ -154,3 +154,41 @@ std::vector<std::vector<float>> ConfigReader::GetFloatArray(const std::string& s
 
   return output;
 }
+
+std::vector<std::vector<int>> ConfigReader::GetIntArray(const std::string& section, const std::string& key)
+{
+  std::vector<std::vector<int>> output;
+  std::string line = Get(section, key);
+
+  std::stringstream ss;
+  ss.str(line);
+
+  std::vector<std::string> tokens;
+
+  std::string temp;
+  while (getline(ss, temp, ';'))
+  {
+    tokens.push_back(temp);
+  }
+
+  for (std::string& token : tokens)
+  {
+    std::stringstream ss2;
+    ss2.str(token);
+
+    std::vector<int> values;
+
+    std::string temp2;
+    while (getline(ss2, temp2, ' '))
+    {
+      if (!temp2.empty())
+      {
+        values.push_back(std::stoi(temp2));
+      }
+    }
+
+    output.push_back(values);
+  }
+
+  return output;
+}

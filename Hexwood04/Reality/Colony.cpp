@@ -2,7 +2,9 @@
 
 std::atomic<int> Colony::m_global_id = 0;
 
-Colony::Colony(Planet* planet) : m_empire_id(0), m_planet(planet)
+Colony::Colony(Planet* planet, std::map<CivilizationPeriod, int> period_lengths, 
+	std::map<CivilizationPeriod, std::map<ResourceType, float>> rates) : m_empire_id(0), m_planet(planet), 
+	m_period_lengths(period_lengths), m_consumption_rates(rates), m_current_period(CivilizationPeriod::PREHISTORY)
 {
 	SetId(m_global_id++);
 }
@@ -12,9 +14,9 @@ Colony::~Colony()
 
 }
 
-bool Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
+void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
-	return false;
+
 }
 
 int Colony::GetEmpireId()

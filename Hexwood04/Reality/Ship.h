@@ -8,6 +8,6 @@ public:
 	Ship();
 	~Ship();
 
-	bool Run(std::mutex& mutex, std::queue<Object*>& queue);
+	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 };
 
