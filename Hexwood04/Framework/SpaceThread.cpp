@@ -1,5 +1,7 @@
 #include "SpaceThread.h"
 #include "../Utilities/ConfigReader.h"
+#include "../Reality/Star.h"
+#include "../Reality/Universe.h"
 
 
 //using namespace Constants;
@@ -55,15 +57,15 @@ Star* SpaceThread::CreateSystem(Universe& verse, StarData& data)
 			env = (PlanetEnvironment)(m_uniform_dist(m_generator) % ((int)PlanetEnvironment::ENVIRONMENT_MAX - 1) + 1);
 		}
 
-		std::vector<Resource> resources;
-		resources.push_back(CreateResource(ResourceType::NATURAL_GAS, type, env));
-		resources.push_back(CreateResource(ResourceType::BIOMASS, type, env));
-		resources.push_back(CreateResource(ResourceType::FOSSIL_FUELS, type, env));
-		resources.push_back(CreateResource(ResourceType::HEAVY_METALS, type, env));
-		resources.push_back(CreateResource(ResourceType::WATER, type, env));
-		resources.push_back(CreateResource(ResourceType::RADIOACTIVE, type, env));
+		std::map<ResourceType, Resource> resources;
+		resources[ResourceType::NATURAL_GAS] = CreateResource(ResourceType::NATURAL_GAS, type, env);
+		resources[ResourceType::BIOMASS] = CreateResource(ResourceType::BIOMASS, type, env);
+		resources[ResourceType::FOSSIL_FUELS] = CreateResource(ResourceType::FOSSIL_FUELS, type, env);
+		resources[ResourceType::HEAVY_METALS] = CreateResource(ResourceType::HEAVY_METALS, type, env);
+		resources[ResourceType::WATER] = CreateResource(ResourceType::WATER, type, env);
+		resources[ResourceType::RADIOACTIVE] = CreateResource(ResourceType::RADIOACTIVE, type, env);
 
-		Planet* planet = new Planet(i, type, env, resources);
+		Planet* planet = new Planet(i, type, env, star, resources);
 		verse.AddPlanet(planet);
 
 		star->AddPlanet(planet);

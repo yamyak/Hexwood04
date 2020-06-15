@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Object.h"
-#include "Star.h"
-#include "Empire.h"
 
 #include <mutex>
+#include <map>
+
+class Empire;
+class Colony;
+class Star;
+class Planet;
 
 class Universe : public Object
 {

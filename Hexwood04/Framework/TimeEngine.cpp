@@ -1,4 +1,5 @@
 #include "TimeEngine.h"
+#include "../Reality/Object.h"
 
 
 TimeEngine::TimeEngine(Object* obj) : m_process_count(0), m_base(obj)

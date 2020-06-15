@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../Reality/Object.h"
-
 #include <queue>
 #include <mutex>
 #include <atomic>
+
+class Object;
 
 class TimeEngine
 {

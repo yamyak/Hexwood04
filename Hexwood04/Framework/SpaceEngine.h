@@ -1,6 +1,7 @@
 #pragma once
 
-#include "SpaceThread.h"
+class Universe;
+class StarTable;
 
 class SpaceEngine
 {

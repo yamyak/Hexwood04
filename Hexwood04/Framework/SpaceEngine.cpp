@@ -1,4 +1,5 @@
 #include "SpaceEngine.h"
+#include "SpaceThread.h"
 
 #include <thread>
 

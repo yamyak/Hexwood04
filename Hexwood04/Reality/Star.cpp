@@ -1,4 +1,5 @@
 #include "Star.h"
+#include "Planet.h"
 
 
 Star::Star(int id, std::string& name, float x, float y, float z) : m_name(name), m_x(x), m_y(y), m_z(z)
@@ -29,4 +30,9 @@ int Star::GetSystemSize()
 Planet* Star::GetPlanet(int key)
 {
 	return m_planets[key];
+}
+
+std::tuple<float, float, float> Star::GetLocation()
+{
+	return std::make_tuple(m_x, m_y, m_z);
 }

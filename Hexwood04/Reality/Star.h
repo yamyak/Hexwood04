@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Object.h"
-#include "Planet.h"
 
 #include <map>
+#include <tuple>
+
+class Planet;
 
 class Star : public Object
 {
@@ -16,6 +18,7 @@ public:
 	int GetSystemSize();
 	Planet* GetPlanet(int key);
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
+	std::tuple<float, float, float> GetLocation();
 
 private:
 	float m_x;

@@ -4,6 +4,7 @@
 #include "Framework/SpaceEngine.h"
 #include "Framework/LifeEngine.h"
 #include "Framework/TimeEngine.h"
+#include "Reality/Universe.h"
 
 #include <chrono>
 #include <iostream>

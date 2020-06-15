@@ -1,9 +1,12 @@
 #pragma once
 
+#include "../Constants.h"
+#include "../Reality/Planet.h"
 #include "StarTable.h"
-#include "../Reality/Universe.h"
 
 #include <random>
+
+class Universe;
 
 class SpaceThread
 {

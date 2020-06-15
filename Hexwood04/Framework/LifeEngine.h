@@ -1,10 +1,13 @@
 #pragma once
 
-#include "../Reality/Universe.h"
+#include "../Constants.h"
 
 #include <random>
+#include <map>
 
 using namespace Constants;
+
+class Universe;
 
 class LifeEngine
 {

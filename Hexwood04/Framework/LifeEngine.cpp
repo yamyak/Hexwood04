@@ -1,5 +1,10 @@
 #include "LifeEngine.h"
 #include "../Utilities/ConfigReader.h"
+#include "../Reality/Universe.h"
+#include "../Reality/Star.h"
+#include "../Reality/Planet.h"
+#include "../Reality/Empire.h"
+#include "../Reality/Colony.h"
 
 
 LifeEngine::LifeEngine(int seed)
@@ -47,7 +52,7 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 					std::map<CivilizationPeriod, int> periods = CalculatePeriodLengths();
 					std::map<CivilizationPeriod, std::map<ResourceType, float>> rates = CalculateConsumptionRates();
 
-					Colony* colony = new Colony(planet, periods, rates);
+					Colony* colony = new Colony(planet, empire, periods, rates);
 					verse.AddColony(colony);
 					empire->AddColony(colony);
 
@@ -72,7 +77,7 @@ std::map<CivilizationPeriod, int> LifeEngine::CalculatePeriodLengths()
 
 		std::normal_distribution<float> period_normal_dist((float)base, (float)sigma);
 		int period = (int)period_normal_dist(m_generator);
-		periods[i] = (period < 0) ? 0 : period;
+		periods[i] = (period < 1) ? 1 : period;
 	}
 
 	return periods;

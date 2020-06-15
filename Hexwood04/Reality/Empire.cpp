@@ -1,4 +1,6 @@
 #include "Empire.h"
+#include "Colony.h"
+#include "Ship.h"
 
 Empire::Empire(int id)
 {
@@ -12,7 +14,8 @@ Empire::~Empire()
 
 void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
-	Lock();
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+	//Lock();
 
 	for (auto& colony : m_colonies)
 	{
@@ -20,17 +23,29 @@ void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 		queue.push(static_cast<Object*>(colony.second));
 	}
 
-	Unlock();
+	//Unlock();
 }
 
 void Empire::AddColony(Colony* colony)
 {
-	Lock();
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+	//Lock();
 
 	colony->SetEmpireId((int)m_colonies.size());
 	m_colonies[colony->GetEmpireId()] = colony;
 
-	Unlock();
+	//Unlock();
+}
+
+void Empire::AddShip(Ship* ship)
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+	//Lock();
+
+	ship->SetEmpireId((int)m_ships.size());
+	m_ships[ship->GetEmpireId()] = ship;
+
+	//Unlock();
 }
 
 std::map<int, Colony*>& Empire::GetColonies()
