@@ -24,10 +24,10 @@ LifeEngine::~LifeEngine()
 
 }
 
-bool LifeEngine::CreateEmpires(Universe& verse)
+bool LifeEngine::CreateEmpires()
 {
 	int number_empires = (int)m_empire_normal_dist(m_generator);
-	int number_stars = verse.GetSize();
+	int number_stars = Universe::GetInstance()->GetSize();
 	int number_planets = 0;
 	int index = 0;
 
@@ -37,7 +37,7 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 		while (!planet_found)
 		{
 			index = m_uniform_dist(m_generator) % number_stars;
-			Star* star = verse.GetStar(index);
+			Star* star = Universe::GetInstance()->GetStar(index);
 
 			number_planets = star->GetSystemSize();
 			if (number_planets > 0)
@@ -53,10 +53,10 @@ bool LifeEngine::CreateEmpires(Universe& verse)
 					std::map<CivilizationPeriod, std::map<ResourceType, float>> rates = CalculateConsumptionRates();
 
 					Colony* colony = new Colony(planet, empire, periods, rates);
-					verse.AddColony(colony);
+					Universe::GetInstance()->AddColony(colony);
 					empire->AddColony(colony);
 
-					verse.AddEmpire(empire);
+					Universe::GetInstance()->AddEmpire(empire);
 
 					planet_found = true;
 				}

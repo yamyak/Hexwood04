@@ -14,7 +14,7 @@ SpaceEngine::~SpaceEngine()
 
 }
 
-void SpaceEngine::Create(int thread_count, StarTable& stars, Universe& verse)
+void SpaceEngine::Create(int thread_count, StarTable& stars)
 {
 	int star_count = stars.GetSize();
 	int sector = star_count / thread_count;
@@ -29,7 +29,7 @@ void SpaceEngine::Create(int thread_count, StarTable& stars, Universe& verse)
 			end += star_count % thread_count;
 		}
 
-		threads.push_back(std::thread(&SpaceEngine::Start_Thread, rand(), std::ref(verse), std::ref(stars), start, end));
+		threads.push_back(std::thread(&SpaceEngine::Start_Thread, rand(), std::ref(stars), start, end));
 	}
 
 	for (auto& thr : threads)
@@ -38,9 +38,9 @@ void SpaceEngine::Create(int thread_count, StarTable& stars, Universe& verse)
 	}
 }
 
-void SpaceEngine::Start_Thread(int seed, Universe& verse, StarTable& starDB, int start, int end)
+void SpaceEngine::Start_Thread(int seed, StarTable& starDB, int start, int end)
 {
 	SpaceThread space(seed);
 
-	bool status = space.CreateUniverse(verse, starDB, start, end);
+	bool status = space.CreateUniverse(starDB, start, end);
 }

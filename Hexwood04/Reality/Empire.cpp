@@ -48,7 +48,16 @@ void Empire::AddShip(Ship* ship)
 	//Unlock();
 }
 
-std::map<int, Colony*>& Empire::GetColonies()
+std::vector<Colony*> Empire::GetColonies()
 {
-	return m_colonies;
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	std::vector<Colony*> colonies;
+
+	for (auto& co : m_colonies)
+	{
+		colonies.push_back(co.second);
+	}
+
+	return colonies;
 }

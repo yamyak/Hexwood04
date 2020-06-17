@@ -2,13 +2,15 @@
 
 #include "Object.h"
 
+#include <atomic>
+
 class Planet;
 class Star;
 
 class Ship : public Object
 {
 public:
-	Ship();
+	Ship(Planet* planet, float speed, float x, float y, float z, bool interstellar, Object* obj);
 	~Ship();
 
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
@@ -25,5 +27,6 @@ private:
 	bool m_interstellar;
 	Star* m_star_destination;
 	Planet* m_planet_destination;
+	static std::atomic<int> m_global_id;
 };
 

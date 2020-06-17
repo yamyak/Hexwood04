@@ -3,6 +3,7 @@
 #include "Object.h"
 
 #include <map>
+#include <vector>
 
 class Colony;
 class Ship;
@@ -17,7 +18,7 @@ public:
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	void AddColony(Colony* colony);
 	void AddShip(Ship* ship);
-	std::map<int, Colony*>& GetColonies();
+	std::vector<Colony*> GetColonies();
 
 private:
 	std::map<int, Colony*> m_colonies;

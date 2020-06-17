@@ -36,6 +36,11 @@ bool Planet::SetOccupied()
 	//Unlock();
 }
 
+bool Planet::GetOccupied()
+{
+	return m_occupied;
+}
+
 int Planet::GetSystemId()
 {
 	return m_system_id;
@@ -66,4 +71,9 @@ std::map<ResourceType, float> Planet::CollectResources(std::map<ResourceType, fl
 	//Unlock();
 
 	return collected;
+}
+
+Star* Planet::GetStar()
+{
+	return m_star;
 }

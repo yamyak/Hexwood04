@@ -4,6 +4,8 @@
 
 namespace Constants
 {
+	const float LIGHT_SPEED = 299792.458f;
+
 	const std::string INITIALIZATION = "INITIALIZATION";
 	const std::string SEED = "seed";
 	const std::string STAR_DATABASE = "star_db";
@@ -30,6 +32,15 @@ namespace Constants
 	const std::string RESOURCE_CONSUMPTION = "colony_resource_consumption";
 	const std::string COLONY_PERIOD_LENGTH = "colony_period_length";
 	const std::string COLONY_PERIOD_LENGTH_SIGMA = "colony_period_length_sigma";
+
+	enum class ObjectType
+	{
+		STAR = 0,
+		PLANET,
+		EMPIRE,
+		COLONY,
+		SHIP
+	};
 
 	enum class PlanetType
 	{

@@ -4,8 +4,6 @@
 #include "../Reality/Universe.h"
 
 
-//using namespace Constants;
-
 SpaceThread::SpaceThread(int seed)
 {
 	m_max_planets = ConfigReader::GetInstance()->GetInt(Constants::SOLAR_SYSTEM, Constants::MAX_PLANETS);
@@ -27,21 +25,21 @@ SpaceThread::~SpaceThread()
 
 }
 
-bool SpaceThread::CreateUniverse(Universe& verse, StarTable& starDB, int start, int end)
+bool SpaceThread::CreateUniverse(StarTable& starDB, int start, int end)
 {
 	for (int i = start; i < end; i++)
 	{
 		StarData data = starDB.GetStar(i);
 
-		Star* star = CreateSystem(verse, data);
+		Star* star = CreateSystem(data);
 
-		verse.AddStar(star);
+		Universe::GetInstance()->AddStar(star);
 	}
 
 	return true;
 }
 
-Star* SpaceThread::CreateSystem(Universe& verse, StarData& data)
+Star* SpaceThread::CreateSystem(StarData& data)
 {
 	Star* star = new Star(data.id, data.name, data.x, data.y, data.z);
 
@@ -66,7 +64,7 @@ Star* SpaceThread::CreateSystem(Universe& verse, StarData& data)
 		resources[ResourceType::RADIOACTIVE] = CreateResource(ResourceType::RADIOACTIVE, type, env);
 
 		Planet* planet = new Planet(i, type, env, star, resources);
-		verse.AddPlanet(planet);
+		Universe::GetInstance()->AddPlanet(planet);
 
 		star->AddPlanet(planet);
 	}

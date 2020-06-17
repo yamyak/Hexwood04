@@ -9,7 +9,7 @@ class Object;
 class TimeEngine
 {
 public:
-	TimeEngine(Object* obj);
+	TimeEngine();
 	~TimeEngine();
 
 	void Start(int thread_count);
@@ -19,6 +19,5 @@ private:
 	std::mutex m_queue_mutex;
 	std::atomic<int> m_process_count;
 	std::queue<Object*> m_queue;
-	Object* m_base;
 };
 

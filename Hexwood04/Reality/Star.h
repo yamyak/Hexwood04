@@ -4,6 +4,7 @@
 
 #include <map>
 #include <tuple>
+#include <vector>
 
 class Planet;
 
@@ -17,6 +18,7 @@ public:
 	void AddPlanet(Planet* planet);
 	int GetSystemSize();
 	Planet* GetPlanet(int key);
+	std::vector<Planet*> GetSystem();
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	std::tuple<float, float, float> GetLocation();
 

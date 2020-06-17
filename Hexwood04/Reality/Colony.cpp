@@ -2,6 +2,11 @@
 #include "Planet.h"
 #include "Ship.h"
 #include "Empire.h"
+#include "Universe.h"
+#include "Star.h"
+
+#include <tuple>
+#include <cmath>
 
 std::atomic<int> Colony::m_global_id = 0;
 
@@ -51,8 +56,17 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 			}
 			else
 			{
-				Ship* ship = new Ship();
-				m_empire->AddShip(ship);
+				float x, y, z;
+				std::tie(x, y, z) = m_planet->GetStar()->GetLocation();
+
+				bool planet = false;
+				Object* obj = nullptr;
+				if (FindNextColonyLocation(planet, obj))
+				{
+					Ship* ship = new Ship(m_planet, LIGHT_SPEED, x, y, z, planet, obj);
+					Universe::GetInstance()->AddShip(ship);
+					m_empire->AddShip(ship);
+				}
 			}
 		}
 	}
@@ -68,4 +82,57 @@ int Colony::GetEmpireId()
 void Colony::SetEmpireId(int id)
 {
 	m_empire_id = id;
+}
+
+bool Colony::FindNextColonyLocation(bool& planet, Object* obj)
+{
+	bool found = false;
+
+	planet = false;
+	obj = nullptr;
+
+	std::vector<Planet*> planets = m_planet->GetStar()->GetSystem();
+	for (auto& pl : planets)
+	{
+		if (pl->GetId() != GetId() && !pl->GetOccupied())
+		{
+			planet = true;
+			obj = pl;
+			found = true;
+		}
+	}
+
+	if (!found)
+	{
+		found = DeepSkySearch(obj);
+	}
+
+	return found;
+}
+
+bool Colony::DeepSkySearch(Object* obj)
+{
+	std::vector<Object*> star_objs = Universe::GetInstance()->GetObjects(ObjectType::STAR);
+
+	float x1, y1, z1;
+	std::tie(x1, y1, z1) = m_planet->GetStar()->GetLocation();
+
+	float distance = std::numeric_limits<float>::max();
+	obj = nullptr;
+
+	for (Object* obj : star_objs)
+	{
+		Star* star = static_cast<Star*>(obj);
+		float x2, y2, z2;
+		std::tie(x2, y2, z2) = star->GetLocation();
+
+		float dist = std::sqrt(std::pow(std::abs(x2 - x1), 2) + std::pow(std::abs(y2 - y1), 2) + std::pow(std::abs(z2 - z1), 2));
+		if (distance > dist)
+		{
+			distance = dist;
+			obj = star;
+		}
+	}
+
+	return obj != nullptr;
 }

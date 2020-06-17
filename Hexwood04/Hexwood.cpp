@@ -28,12 +28,12 @@ int main()
 
 	srand(ConfigReader::GetInstance()->GetInt(Constants::INITIALIZATION, Constants::SEED));
 
-	Universe verse;
+	Universe::GetInstance();
 
 	auto start = std::chrono::high_resolution_clock::now();
 
 	SpaceEngine spaceEngine;
-	spaceEngine.Create(thread_count, stars, verse);
+	spaceEngine.Create(thread_count, stars);
 
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
@@ -46,9 +46,9 @@ int main()
 	}
 
 	LifeEngine lifeEngine(rand());
-	lifeEngine.CreateEmpires(verse);
+	lifeEngine.CreateEmpires();
 
-	TimeEngine timeEngine(static_cast<Object*>(&verse));
+	TimeEngine timeEngine;
 	timeEngine.Start(thread_count);
 
 	return 0;

@@ -27,8 +27,10 @@ public:
 
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	bool SetOccupied();
+	bool GetOccupied();
 	int GetSystemId();
 	std::map<ResourceType, float> CollectResources(std::map<ResourceType, float> needs);
+	Star* GetStar();
 
 private:
 	static std::atomic<int> m_global_id;

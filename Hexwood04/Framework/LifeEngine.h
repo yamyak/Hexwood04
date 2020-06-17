@@ -15,7 +15,7 @@ public:
 	LifeEngine(int seed);
 	~LifeEngine();
 
-	bool CreateEmpires(Universe& verse);
+	bool CreateEmpires();
 
 private:
 	std::vector<std::vector<float>> m_resource_consumption;

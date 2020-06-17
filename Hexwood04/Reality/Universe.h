@@ -1,30 +1,41 @@
 #pragma once
 
-#include "Object.h"
+#include "../Constants.h"
 
 #include <mutex>
 #include <map>
+#include <vector>
 
+using namespace Constants;
+
+class Object;
 class Empire;
 class Colony;
 class Star;
 class Planet;
+class Ship;
 
-class Universe : public Object
+class Universe
 {
 public:
 	Universe();
-	~Universe();
 
+	static Universe* GetInstance();
+
+	std::vector<Object*> GetObjects(ObjectType type);
 	void AddStar(Star* star);
 	void AddPlanet(Planet* planet);
 	void AddEmpire(Empire* empire);
 	void AddColony(Colony* colony);
+	void AddShip(Ship* ship);
 	Star* GetStar(int key);
 	int GetSize();
-	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 
 private:
+	static Universe* m_instance;
+
+	std::mutex m_object_mutex;
+
 	std::map<int, Star*> m_stars;
 	std::mutex m_star_mutex;
 	std::map<int, Planet*> m_planets;
@@ -34,5 +45,11 @@ private:
 	std::mutex m_empire_mutex;
 	std::map<int, Colony*> m_colonies;
 	std::mutex m_colony_mutex;
+	std::map<int, Ship*> m_ships;
+	std::mutex m_ship_mutex;
+
+	~Universe();
+
+	void CleanUp();
 };
 

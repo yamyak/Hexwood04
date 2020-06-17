@@ -6,15 +6,13 @@
 
 #include <random>
 
-class Universe;
-
 class SpaceThread
 {
 public:
 	SpaceThread(int seed);
 	~SpaceThread();
 
-	bool CreateUniverse(Universe& verse, StarTable& starDB, int start, int end);
+	bool CreateUniverse(StarTable& starDB, int start, int end);
 
 private:
 	int m_max_planets;
@@ -31,7 +29,7 @@ private:
 	std::normal_distribution<float> m_resource_normal_dist;
 	std::normal_distribution<float> m_recharge_normal_dist;
 
-	Star* CreateSystem(Universe& verse, StarData& data);
+	Star* CreateSystem(StarData& data);
 	Resource CreateResource(ResourceType type, PlanetType planet, PlanetEnvironment env);
 };
 

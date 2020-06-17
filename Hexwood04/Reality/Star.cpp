@@ -36,3 +36,17 @@ std::tuple<float, float, float> Star::GetLocation()
 {
 	return std::make_tuple(m_x, m_y, m_z);
 }
+
+std::vector<Planet*> Star::GetSystem()
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	std::vector<Planet*> planets;
+
+	for (auto& pl : m_planets)
+	{
+		planets.push_back(pl.second);
+	}
+
+	return planets;
+}

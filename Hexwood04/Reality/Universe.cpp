@@ -3,16 +3,81 @@
 #include "Empire.h"
 #include "Planet.h"
 #include "Colony.h"
+#include "Ship.h"
 
+
+Universe* Universe::m_instance = nullptr;
 
 Universe::Universe()
 {
-
+	CleanUp();
 }
 
 Universe::~Universe()
 {
+	CleanUp();
+	delete m_instance;
+	m_instance = nullptr;
+}
 
+void Universe::CleanUp()
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	for (auto& colony : m_colonies)
+	{
+		if (colony.second != nullptr)
+		{
+			delete colony.second;
+			colony.second = nullptr;
+		}
+	}
+
+	for (auto& empire : m_empires)
+	{
+		if (empire.second != nullptr)
+		{
+			delete empire.second;
+			empire.second = nullptr;
+		}
+	}
+
+	for (auto& planet : m_planets)
+	{
+		if (planet.second != nullptr)
+		{
+			delete planet.second;
+			planet.second = nullptr;
+		}
+	}
+
+	for (auto& star : m_stars)
+	{
+		if (star.second != nullptr)
+		{
+			delete star.second;
+			star.second = nullptr;
+		}
+	}
+
+	for (auto& ship : m_ships)
+	{
+		if (ship.second != nullptr)
+		{
+			delete ship.second;
+			ship.second = nullptr;
+		}
+	}
+}
+
+Universe* Universe::GetInstance()
+{
+	if (m_instance == nullptr)
+	{
+		m_instance = new Universe();
+	}
+
+	return m_instance;
 }
 
 void Universe::AddStar(Star* star)
@@ -47,20 +112,71 @@ void Universe::AddColony(Colony* colony)
 	m_colonies[colony->GetId()] = colony;
 }
 
-void Universe::Run(std::mutex& mutex, std::queue<Object*>& queue)
+void Universe::AddShip(Ship* ship)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
+	//std::lock_guard<std::mutex> lock(m_ship_mutex);
 
-	//std::unique_lock<std::mutex> empire_lock(m_empire_mutex);
-	for (auto& empire : m_empires)
+	m_ships[ship->GetId()] = ship;
+}
+
+std::vector<Object*> Universe::GetObjects(ObjectType type)
+{
+	std::vector<Object*> output;
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	switch (type)
 	{
-		std::lock_guard<std::mutex> queue_lock(mutex);
-		queue.push(static_cast<Object*>(empire.second));
+	case ObjectType::STAR:
+	{
+		output.reserve(m_stars.size());
+		for (auto& star : m_stars)
+		{
+			output.push_back(star.second);
+		}
+		break;
 	}
-	//empire_lock.unlock();
+	case ObjectType::PLANET:
+	{
+		output.reserve(m_planets.size());
+		for (auto& planet : m_planets)
+		{
+			output.push_back(planet.second);
+		}
+		break;
+	}
+	case ObjectType::EMPIRE:
+	{
+		output.reserve(m_empires.size());
+		for (auto& empire : m_empires)
+		{
+			output.push_back(empire.second);
+		}
+		break;
+	}
+	case ObjectType::COLONY:
+	{
+		output.reserve(m_colonies.size());
+		for (auto& colony : m_colonies)
+		{
+			output.push_back(colony.second);
+		}
+		break;
+	}
+	case ObjectType::SHIP:
+	{
+		output.reserve(m_ships.size());
+		for (auto& ship : m_ships)
+		{
+			output.push_back(ship.second);
+		}
+		break;
+	}
+	default:
+		break;
+	}
 
-	//Unlock();
+	return output;
 }
 
 int Universe::GetSize()

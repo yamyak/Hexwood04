@@ -1,8 +1,14 @@
 #include "TimeEngine.h"
 #include "../Reality/Object.h"
+#include "../Reality/Universe.h"
+#include "../Constants.h"
+
+#include <map>
 
 
-TimeEngine::TimeEngine(Object* obj) : m_process_count(0), m_base(obj)
+using namespace Constants;
+
+TimeEngine::TimeEngine() : m_process_count(0)
 {
 
 }
@@ -14,7 +20,13 @@ TimeEngine::~TimeEngine()
 
 void TimeEngine::Start(int thread_count)
 {
-	m_queue.push(m_base);
+	std::vector<Object*> objects = Universe::GetInstance()->GetObjects(ObjectType::EMPIRE);
+
+	for (Object* obj : objects)
+	{
+		std::lock_guard<std::mutex> queue_lock(m_queue_mutex);
+		m_queue.push(obj);
+	}
 
 	std::vector<std::thread> threads;
 	for (int i = 0; i < thread_count; i++)
