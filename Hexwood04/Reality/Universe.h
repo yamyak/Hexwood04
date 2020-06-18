@@ -5,6 +5,7 @@
 #include <mutex>
 #include <map>
 #include <vector>
+#include <utility>
 
 using namespace Constants;
 
@@ -24,12 +25,16 @@ public:
 
 	std::vector<Object*> GetObjects(ObjectType type);
 	void AddStar(Star* star);
+	Star* GetStar(int key);
 	void AddPlanet(Planet* planet);
 	void AddEmpire(Empire* empire);
 	void AddColony(Colony* colony);
 	void AddShip(Ship* ship);
-	Star* GetStar(int key);
+	void AddToGraveyard(ObjectType type, int id);
+	void ClearOutGraveyard();
 	int GetSize();
+	void IncrementAge();
+	int GetAge();
 
 private:
 	static Universe* m_instance;
@@ -47,6 +52,9 @@ private:
 	std::mutex m_colony_mutex;
 	std::map<int, Ship*> m_ships;
 	std::mutex m_ship_mutex;
+
+	int m_age;
+	std::vector<std::pair<ObjectType, int>> m_graveyard;
 
 	~Universe();
 

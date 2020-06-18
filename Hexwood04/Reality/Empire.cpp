@@ -23,6 +23,12 @@ void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 		queue.push(static_cast<Object*>(colony.second));
 	}
 
+	for (auto& ship : m_ships)
+	{
+		std::lock_guard<std::mutex> queue_lock(mutex);
+		queue.push(static_cast<Object*>(ship.second));
+	}
+
 	//Unlock();
 }
 

@@ -5,8 +5,8 @@
 #include "Universe.h"
 #include "Star.h"
 
-#include <tuple>
 #include <cmath>
+
 
 std::atomic<int> Colony::m_global_id = 0;
 
@@ -18,9 +18,31 @@ Colony::Colony(Planet* planet, Empire* empire, std::map<CivilizationPeriod, int>
 	SetId(m_global_id++);
 }
 
+Colony::Colony(Colony* colony) : m_empire_id(0), m_planet(nullptr),
+	m_period_lengths(colony->m_period_lengths), m_consumption_rates(colony->m_consumption_rates), 
+	m_current_period(CivilizationPeriod::SPACE_AGE), m_age(0), m_empire(colony->m_empire)
+{
+	SetId(m_global_id++);
+}
+
 Colony::~Colony()
 {
 
+}
+
+void Colony::SetPlanet(Planet* planet)
+{
+	m_planet = planet;
+}
+
+Empire* Colony::GetEmpire()
+{
+	return m_empire;
+}
+
+Planet* Colony::GetPlanet()
+{
+	return m_planet;
 }
 
 void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
@@ -31,10 +53,9 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 	std::map<ResourceType, float> collected = m_planet->CollectResources(m_consumption_rates[m_current_period]);
 
 	bool collection_failed = false;
-	std::map<ResourceType, float>::iterator it = collected.begin();
-	while (it != collected.end())
+	for(auto& item : collected)
 	{
-		if (it->second == 0 && m_consumption_rates[m_current_period][it->first] != 0)
+		if (item.second == 0 && m_consumption_rates[m_current_period][item.first] != 0)
 		{
 			collection_failed = true;
 			break;
@@ -43,10 +64,8 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 
 	if (!collection_failed)
 	{
-		int period_length = m_period_lengths[m_current_period];
-		
 		m_age++;
-		if (m_age > period_length)
+		if (m_age > m_period_lengths[m_current_period])
 		{
 			m_age = 0;
 
@@ -56,14 +75,11 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 			}
 			else
 			{
-				float x, y, z;
-				std::tie(x, y, z) = m_planet->GetStar()->GetLocation();
-
 				bool planet = false;
 				Object* obj = nullptr;
 				if (FindNextColonyLocation(planet, obj))
 				{
-					Ship* ship = new Ship(m_planet, LIGHT_SPEED, x, y, z, planet, obj);
+					Ship* ship = new Ship(this, LIGHT_SPEED, planet, obj);
 					Universe::GetInstance()->AddShip(ship);
 					m_empire->AddShip(ship);
 				}
@@ -126,7 +142,7 @@ bool Colony::DeepSkySearch(Object* obj)
 		float x2, y2, z2;
 		std::tie(x2, y2, z2) = star->GetLocation();
 
-		float dist = std::sqrt(std::pow(std::abs(x2 - x1), 2) + std::pow(std::abs(y2 - y1), 2) + std::pow(std::abs(z2 - z1), 2));
+		float dist = std::sqrt(std::pow((x2 - x1), 2) + std::pow((y2 - y1), 2) + std::pow((z2 - z1), 2));
 		if (distance > dist)
 		{
 			distance = dist;

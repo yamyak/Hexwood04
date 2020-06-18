@@ -21,7 +21,7 @@ struct Resource
 class Planet :	public Object
 {
 public:
-	inline Planet() : m_system_id(0), m_occupied(false), m_type((PlanetType)0), m_environment((PlanetEnvironment)0), m_star(nullptr) {};
+	inline Planet() : m_system_id(0), m_occupied(false), m_type((PlanetType)0), m_environment((PlanetEnvironment)0), m_star(nullptr), m_age(0) {};
 	Planet(int id, PlanetType type, PlanetEnvironment env, Star* star, std::map<ResourceType, Resource>& resources);
 	~Planet();
 
@@ -36,6 +36,7 @@ private:
 	static std::atomic<int> m_global_id;
 	int m_system_id;
 	bool m_occupied;
+	int m_age;
 	Star* m_star;
 	PlanetType m_type;
 	PlanetEnvironment m_environment;

@@ -28,6 +28,8 @@ void TimeEngine::Start(int thread_count)
 		m_queue.push(obj);
 	}
 
+	Universe::GetInstance()->IncrementAge();
+
 	std::vector<std::thread> threads;
 	for (int i = 0; i < thread_count; i++)
 	{
@@ -38,6 +40,8 @@ void TimeEngine::Start(int thread_count)
 	{
 		thr.join();
 	}
+
+	Universe::GetInstance()->ClearOutGraveyard();
 }
 
 void TimeEngine::Start_Thread(std::mutex& mutex, std::atomic<int>& count, std::queue<Object*>& queue)

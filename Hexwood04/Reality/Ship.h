@@ -4,13 +4,12 @@
 
 #include <atomic>
 
-class Planet;
-class Star;
+class Colony;
 
 class Ship : public Object
 {
 public:
-	Ship(Planet* planet, float speed, float x, float y, float z, bool interstellar, Object* obj);
+	Ship(Colony* colony, float speed, bool interstellar, Object* obj);
 	~Ship();
 
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
@@ -23,10 +22,10 @@ private:
 	float m_y;
 	float m_z;
 	float m_speed;
-	Planet* m_source;
+	Colony* m_source;
 	bool m_interstellar;
-	Star* m_star_destination;
-	Planet* m_planet_destination;
+	Object* m_destination;
+	bool m_started;
 	static std::atomic<int> m_global_id;
 };
 

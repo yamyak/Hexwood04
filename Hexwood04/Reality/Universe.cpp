@@ -8,7 +8,7 @@
 
 Universe* Universe::m_instance = nullptr;
 
-Universe::Universe()
+Universe::Universe() : m_age(0)
 {
 	CleanUp();
 }
@@ -78,6 +78,11 @@ Universe* Universe::GetInstance()
 	}
 
 	return m_instance;
+}
+
+void Universe::AddToGraveyard(ObjectType type, int id)
+{
+	m_graveyard.push_back(std::make_pair(type, id));
 }
 
 void Universe::AddStar(Star* star)
@@ -187,4 +192,34 @@ int Universe::GetSize()
 Star* Universe::GetStar(int key)
 {
 	return m_stars[key];
+}
+
+void Universe::ClearOutGraveyard()
+{
+	for (auto& elem : m_graveyard)
+	{
+		switch (elem.first)
+		{
+			case ObjectType::SHIP:
+			{
+				Ship* ship = m_ships[elem.second];
+				m_ships.erase(elem.second);
+				delete ship;
+				ship = nullptr;
+				break;
+			}
+			default:
+				break;
+		}
+	}
+}
+
+void Universe::IncrementAge()
+{
+	m_age++;
+}
+
+int Universe::GetAge()
+{
+	return m_age;
 }
