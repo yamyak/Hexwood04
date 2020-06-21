@@ -15,6 +15,7 @@ public:
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
 	void SetEmpireId(int id);
 	int GetEmpireId();
+	Colony* GetSourceColony();
 
 private:
 	int m_empire_id;

@@ -191,7 +191,13 @@ int Universe::GetSize()
 
 Star* Universe::GetStar(int key)
 {
-	return m_stars[key];
+	Star* star = nullptr;
+	if (m_stars.find(key) != m_stars.end())
+	{
+		star = m_stars[key];
+	}
+
+	return star;
 }
 
 void Universe::ClearOutGraveyard()
@@ -203,15 +209,21 @@ void Universe::ClearOutGraveyard()
 			case ObjectType::SHIP:
 			{
 				Ship* ship = m_ships[elem.second];
+
+				ship->GetSourceColony()->GetEmpire()->DeleteShip(ship->GetEmpireId());
+
 				m_ships.erase(elem.second);
 				delete ship;
 				ship = nullptr;
+
 				break;
 			}
 			default:
 				break;
 		}
 	}
+
+	m_graveyard.clear();
 }
 
 void Universe::IncrementAge()

@@ -27,6 +27,7 @@ LifeEngine::~LifeEngine()
 bool LifeEngine::CreateEmpires()
 {
 	int number_empires = (int)m_empire_normal_dist(m_generator);
+	number_empires = 1;
 	int number_stars = Universe::GetInstance()->GetSize();
 	int number_planets = 0;
 	int index = 0;
@@ -39,26 +40,30 @@ bool LifeEngine::CreateEmpires()
 			index = m_uniform_dist(m_generator) % number_stars;
 			Star* star = Universe::GetInstance()->GetStar(index);
 
-			number_planets = star->GetSystemSize();
-			if (number_planets > 0)
+			if (star != nullptr)
 			{
-				index = m_uniform_dist(m_generator) % number_planets;
-				Planet* planet = star->GetPlanet(index);
-
-				if (planet->SetOccupied())
+				number_planets = star->GetSystemSize();
+				if (number_planets > 0)
 				{
-					Empire* empire = new Empire(i);
-					
-					std::map<CivilizationPeriod, int> periods = CalculatePeriodLengths();
-					std::map<CivilizationPeriod, std::map<ResourceType, float>> rates = CalculateConsumptionRates();
+					index = m_uniform_dist(m_generator) % number_planets;
+					Planet* planet = star->GetPlanet(index);
 
-					Colony* colony = new Colony(planet, empire, periods, rates);
-					Universe::GetInstance()->AddColony(colony);
-					empire->AddColony(colony);
+					if (planet->SetOccupied() && planet->GetPlanetType() != PlanetType::GAS_GIANT)
+					{
+						Empire* empire = new Empire(i);
 
-					Universe::GetInstance()->AddEmpire(empire);
+						std::map<CivilizationPeriod, int> periods = CalculatePeriodLengths();
+						std::map<CivilizationPeriod, std::map<ResourceType, float>> rates = CalculateConsumptionRates();
 
-					planet_found = true;
+						Colony* colony = new Colony(planet, empire, periods, rates);
+						Universe::GetInstance()->AddColony(colony);
+						empire->AddColony(colony);
+						empire->RegisterForOccupancy(ObjectType::STAR, star->GetId());
+
+						Universe::GetInstance()->AddEmpire(empire);
+
+						planet_found = true;
+					}
 				}
 			}
 		}

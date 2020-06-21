@@ -37,7 +37,7 @@ private:
 	CivilizationPeriod m_current_period;
 	int m_age;
 
-	bool FindNextColonyLocation(bool& planet, Object* obj);
-	bool DeepSkySearch(Object* obj);
+	bool FindNextColonyLocation(bool& planet, Object*& obj);
+	bool DeepSkySearch(Object*& obj);
 };
 

@@ -88,3 +88,8 @@ Star* Planet::GetStar()
 {
 	return m_star;
 }
+
+PlanetType Planet::GetPlanetType()
+{
+	return m_type;
+}

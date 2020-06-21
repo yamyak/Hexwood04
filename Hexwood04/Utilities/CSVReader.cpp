@@ -24,8 +24,10 @@ std::vector<std::vector<std::string>> CSVReader::ReadCSV(std::string& path, bool
 
 		std::set<int> indices = ReadHeader(line, columns);
 
-		while (getline(myfile, line))
+		//while (getline(myfile, line))
+		for(int i = 0; i < 1000; i++)
 		{
+			getline(myfile, line);
 			std::vector<std::string> tokens = ReadLine(line, indices);
 			requested_data.push_back(tokens);
 		}

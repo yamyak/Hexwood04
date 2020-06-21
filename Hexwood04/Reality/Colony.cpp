@@ -65,7 +65,7 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 	if (!collection_failed)
 	{
 		m_age++;
-		if (m_age > m_period_lengths[m_current_period])
+		if (m_age >= m_period_lengths[m_current_period])
 		{
 			m_age = 0;
 
@@ -79,13 +79,16 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 				Object* obj = nullptr;
 				if (FindNextColonyLocation(planet, obj))
 				{
-					Ship* ship = new Ship(this, LIGHT_SPEED, planet, obj);
+					Ship* ship = new Ship(this, LIGHT_SPEED, !planet, obj);
 					Universe::GetInstance()->AddShip(ship);
 					m_empire->AddShip(ship);
 				}
 			}
 		}
 	}
+
+	std::lock_guard<std::mutex> queue_lock(mutex);
+	queue.push(static_cast<Object*>(m_planet));
 
 	//Unlock();
 }
@@ -100,7 +103,7 @@ void Colony::SetEmpireId(int id)
 	m_empire_id = id;
 }
 
-bool Colony::FindNextColonyLocation(bool& planet, Object* obj)
+bool Colony::FindNextColonyLocation(bool& planet, Object*& obj)
 {
 	bool found = false;
 
@@ -108,13 +111,15 @@ bool Colony::FindNextColonyLocation(bool& planet, Object* obj)
 	obj = nullptr;
 
 	std::vector<Planet*> planets = m_planet->GetStar()->GetSystem();
-	for (auto& pl : planets)
+	for (Planet* pl : planets)
 	{
-		if (pl->GetId() != GetId() && !pl->GetOccupied())
+		if (pl->GetId() != GetId() && !pl->GetOccupied() && m_empire->CheckOccupancy(ObjectType::PLANET, pl->GetId()))
 		{
+			m_empire->RegisterForOccupancy(ObjectType::PLANET, pl->GetId());
 			planet = true;
 			obj = pl;
 			found = true;
+			break;
 		}
 	}
 
@@ -126,7 +131,7 @@ bool Colony::FindNextColonyLocation(bool& planet, Object* obj)
 	return found;
 }
 
-bool Colony::DeepSkySearch(Object* obj)
+bool Colony::DeepSkySearch(Object*& obj)
 {
 	std::vector<Object*> star_objs = Universe::GetInstance()->GetObjects(ObjectType::STAR);
 
@@ -136,19 +141,23 @@ bool Colony::DeepSkySearch(Object* obj)
 	float distance = std::numeric_limits<float>::max();
 	obj = nullptr;
 
-	for (Object* obj : star_objs)
+	for (Object* star_obj : star_objs)
 	{
-		Star* star = static_cast<Star*>(obj);
-		float x2, y2, z2;
-		std::tie(x2, y2, z2) = star->GetLocation();
-
-		float dist = std::sqrt(std::pow((x2 - x1), 2) + std::pow((y2 - y1), 2) + std::pow((z2 - z1), 2));
-		if (distance > dist)
+		if (star_obj->GetId() != m_planet->GetStar()->GetId() && m_empire->CheckOccupancy(ObjectType::STAR, star_obj->GetId()))
 		{
-			distance = dist;
-			obj = star;
+			Star* star = static_cast<Star*>(star_obj);
+			float x2, y2, z2;
+			std::tie(x2, y2, z2) = star->GetLocation();
+
+			float dist = std::sqrt(std::pow((x2 - x1), 2) + std::pow((y2 - y1), 2) + std::pow((z2 - z1), 2));
+			if (distance > dist)
+			{
+				distance = dist;
+				obj = star;
+			}
 		}
 	}
 
+	m_empire->RegisterForOccupancy(ObjectType::STAR, obj->GetId());
 	return obj != nullptr;
 }

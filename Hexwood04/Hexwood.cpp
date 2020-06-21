@@ -26,6 +26,8 @@ int main()
 	}
 	thread_count = thread_count == 0 ? 1 : thread_count;
 
+	thread_count = 1;
+
 	srand(ConfigReader::GetInstance()->GetInt(Constants::INITIALIZATION, Constants::SEED));
 
 	Universe::GetInstance();

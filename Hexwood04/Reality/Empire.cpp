@@ -2,6 +2,7 @@
 #include "Colony.h"
 #include "Ship.h"
 
+
 Empire::Empire(int id)
 {
 	SetId(id);
@@ -66,4 +67,85 @@ std::vector<Colony*> Empire::GetColonies()
 	}
 
 	return colonies;
+}
+
+void Empire::DeleteShip(int id)
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	m_ships.erase(id);
+}
+
+bool Empire::CheckOccupancy(ObjectType type, int id)
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+	if (type == ObjectType::PLANET)
+	{
+		for (int& site : m_potenialColonySites)
+		{
+			if (site == id)
+			{
+				return false;
+			}
+		}
+	}
+	else if(type == ObjectType::STAR)
+	{
+		for (int& site : m_potentialEmpireSystems)
+		{
+			if (site == id)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+void Empire::RegisterForOccupancy(ObjectType type, int id)
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+	if (type == ObjectType::PLANET)
+	{
+		m_potenialColonySites.push_back(id);
+	}
+	else if (type == ObjectType::STAR)
+	{
+		m_potentialEmpireSystems.push_back(id);
+	}
+}
+
+void Empire::CleanOccupanyRecords(ObjectType type, int id)
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	if (type == ObjectType::PLANET)
+	{
+		std::vector<int>::iterator iter = m_potenialColonySites.begin();
+		while (iter != m_potenialColonySites.end())
+		{
+			if (*iter == id)
+			{
+				m_potenialColonySites.erase(iter);
+				break;
+			}
+
+			iter++;
+		}
+	}
+	else if (type == ObjectType::STAR)
+	{
+		std::vector<int>::iterator iter = m_potentialEmpireSystems.begin();
+		while (iter != m_potentialEmpireSystems.end())
+		{
+			if (*iter == id)
+			{
+				m_potentialEmpireSystems.erase(iter);
+				break;
+			}
+
+			iter++;
+		}
+	}
 }

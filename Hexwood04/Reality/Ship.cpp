@@ -63,16 +63,17 @@ void Ship::Run(std::mutex& mutex, std::queue<Object*>& queue)
 			std::vector<Planet*> system = star->GetSystem();
 			for (Planet* planet : system)
 			{
-				if (planet->SetOccupied())
+				if (m_source->GetEmpire()->CheckOccupancy(ObjectType::PLANET, planet->GetId()) && planet->SetOccupied())
 				{
 					Colony* colony = new Colony(m_source);
 					colony->SetPlanet(planet);
 					Universe::GetInstance()->AddColony(colony);
 					m_source->GetEmpire()->AddColony(colony);
-
-					Universe::GetInstance()->AddToGraveyard(ObjectType::SHIP, GetId());
+					break;
 				}
 			}
+
+			Universe::GetInstance()->AddToGraveyard(ObjectType::SHIP, GetId());
 		}
 	}
 	else
@@ -82,13 +83,14 @@ void Ship::Run(std::mutex& mutex, std::queue<Object*>& queue)
 			Planet* planet = static_cast<Planet*>(m_destination);
 			if (planet->SetOccupied())
 			{
+				m_source->GetEmpire()->CleanOccupanyRecords(ObjectType::PLANET, planet->GetId());
 				Colony* colony = new Colony(m_source);
 				colony->SetPlanet(planet);
 				Universe::GetInstance()->AddColony(colony);
 				m_source->GetEmpire()->AddColony(colony);
-
-				Universe::GetInstance()->AddToGraveyard(ObjectType::SHIP, GetId());
 			}
+
+			Universe::GetInstance()->AddToGraveyard(ObjectType::SHIP, GetId());
 		}
 
 		m_started = true;
@@ -103,4 +105,9 @@ int Ship::GetEmpireId()
 void Ship::SetEmpireId(int id)
 {
 	m_empire_id = id;
+}
+
+Colony* Ship::GetSourceColony()
+{
+	return m_source;
 }

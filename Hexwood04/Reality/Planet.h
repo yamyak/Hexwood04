@@ -31,6 +31,7 @@ public:
 	int GetSystemId();
 	std::map<ResourceType, float> CollectResources(std::map<ResourceType, float> needs);
 	Star* GetStar();
+	PlanetType GetPlanetType();
 
 private:
 	static std::atomic<int> m_global_id;
