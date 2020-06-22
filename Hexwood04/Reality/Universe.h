@@ -26,13 +26,16 @@ public:
 	std::vector<Object*> GetObjects(ObjectType type);
 	void AddStar(Star* star);
 	Star* GetStar(int key);
+	int GetStarCount();
 	void AddPlanet(Planet* planet);
 	void AddEmpire(Empire* empire);
+	int GetEmpireCount();
 	void AddColony(Colony* colony);
+	int GetColonyCount();
 	void AddShip(Ship* ship);
+	int GetShipCount();
 	void AddToGraveyard(ObjectType type, int id);
 	void ClearOutGraveyard();
-	int GetSize();
 	void IncrementAge();
 	int GetAge();
 
@@ -42,16 +45,11 @@ private:
 	std::mutex m_object_mutex;
 
 	std::map<int, Star*> m_stars;
-	std::mutex m_star_mutex;
 	std::map<int, Planet*> m_planets;
-	std::mutex m_planet_mutex;
 
 	std::map<int, Empire*> m_empires;
-	std::mutex m_empire_mutex;
 	std::map<int, Colony*> m_colonies;
-	std::mutex m_colony_mutex;
 	std::map<int, Ship*> m_ships;
-	std::mutex m_ship_mutex;
 
 	int m_age;
 	std::vector<std::pair<ObjectType, int>> m_graveyard;

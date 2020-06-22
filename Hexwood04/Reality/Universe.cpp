@@ -82,13 +82,14 @@ Universe* Universe::GetInstance()
 
 void Universe::AddToGraveyard(ObjectType type, int id)
 {
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
 	m_graveyard.push_back(std::make_pair(type, id));
 }
 
 void Universe::AddStar(Star* star)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//std::lock_guard<std::mutex> lock(m_star_mutex);
 
 	m_stars[star->GetId()] = star;
 }
@@ -96,7 +97,6 @@ void Universe::AddStar(Star* star)
 void Universe::AddPlanet(Planet* planet)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//std::lock_guard<std::mutex> lock(m_planet_mutex);
 
 	m_planets[planet->GetId()] = planet;
 }
@@ -104,7 +104,6 @@ void Universe::AddPlanet(Planet* planet)
 void Universe::AddEmpire(Empire* empire)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//std::lock_guard<std::mutex> lock(m_empire_mutex);
 
 	m_empires[empire->GetId()] = empire;
 }
@@ -112,7 +111,6 @@ void Universe::AddEmpire(Empire* empire)
 void Universe::AddColony(Colony* colony)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//std::lock_guard<std::mutex> lock(m_colony_mutex);
 
 	m_colonies[colony->GetId()] = colony;
 }
@@ -120,7 +118,6 @@ void Universe::AddColony(Colony* colony)
 void Universe::AddShip(Ship* ship)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//std::lock_guard<std::mutex> lock(m_ship_mutex);
 
 	m_ships[ship->GetId()] = ship;
 }
@@ -184,9 +181,24 @@ std::vector<Object*> Universe::GetObjects(ObjectType type)
 	return output;
 }
 
-int Universe::GetSize()
+int Universe::GetStarCount()
 {
 	return (int)m_stars.size();
+}
+
+int Universe::GetEmpireCount()
+{
+	return (int)m_empires.size();
+}
+
+int Universe::GetColonyCount()
+{
+	return (int)m_colonies.size();
+}
+
+int Universe::GetShipCount()
+{
+	return (int)m_ships.size();
 }
 
 Star* Universe::GetStar(int key)
@@ -202,6 +214,8 @@ Star* Universe::GetStar(int key)
 
 void Universe::ClearOutGraveyard()
 {
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
 	for (auto& elem : m_graveyard)
 	{
 		switch (elem.first)
@@ -210,7 +224,7 @@ void Universe::ClearOutGraveyard()
 			{
 				Ship* ship = m_ships[elem.second];
 
-				ship->GetSourceColony()->GetEmpire()->DeleteShip(ship->GetEmpireId());
+				ship->GetSourceColony()->GetEmpire()->DeleteShip(ship->GetId());
 
 				m_ships.erase(elem.second);
 				delete ship;

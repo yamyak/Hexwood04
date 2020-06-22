@@ -13,12 +13,9 @@ public:
 	~Ship();
 
 	void Run(std::mutex& mutex, std::queue<Object*>& queue);
-	void SetEmpireId(int id);
-	int GetEmpireId();
 	Colony* GetSourceColony();
 
 private:
-	int m_empire_id;
 	float m_x;
 	float m_y;
 	float m_z;

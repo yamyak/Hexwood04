@@ -3,7 +3,7 @@
 
 std::atomic<int> Planet::m_global_id = 0;
 
-Planet::Planet(int id, PlanetType type, PlanetEnvironment env, Star* star, std::map<ResourceType, Resource>& resources) : m_system_id(id), 
+Planet::Planet(PlanetType type, PlanetEnvironment env, Star* star, std::map<ResourceType, Resource>& resources) : 
 m_type(type), m_environment(env), m_resources(resources), m_occupied(false), m_star(star), m_age(0)
 {
 	SetId(m_global_id++);
@@ -51,11 +51,6 @@ bool Planet::SetOccupied()
 bool Planet::GetOccupied()
 {
 	return m_occupied;
-}
-
-int Planet::GetSystemId()
-{
-	return m_system_id;
 }
 
 std::map<ResourceType, float> Planet::CollectResources(std::map<ResourceType, float> needs)

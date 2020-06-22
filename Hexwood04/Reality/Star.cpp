@@ -14,7 +14,7 @@ Star::~Star()
 
 void Star::AddPlanet(Planet* planet)
 {
-	m_planets[planet->GetSystemId()] = planet;
+	m_planets[planet->GetId()] = planet;
 }
 
 void Star::Run(std::mutex& mutex, std::queue<Object*>& queue)
@@ -29,7 +29,18 @@ int Star::GetSystemSize()
 
 Planet* Star::GetPlanet(int key)
 {
-	return m_planets[key];
+	int i = 0;
+	for (auto& planet : m_planets)
+	{
+		if (i == key)
+		{
+			return planet.second;
+		}
+
+		i++;
+	}
+	
+	return nullptr;
 }
 
 std::tuple<float, float, float> Star::GetLocation()

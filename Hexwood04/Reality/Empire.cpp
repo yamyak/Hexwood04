@@ -16,7 +16,6 @@ Empire::~Empire()
 void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
 	for (auto& colony : m_colonies)
 	{
@@ -29,30 +28,20 @@ void Empire::Run(std::mutex& mutex, std::queue<Object*>& queue)
 		std::lock_guard<std::mutex> queue_lock(mutex);
 		queue.push(static_cast<Object*>(ship.second));
 	}
-
-	//Unlock();
 }
 
 void Empire::AddColony(Colony* colony)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
-	colony->SetEmpireId((int)m_colonies.size());
-	m_colonies[colony->GetEmpireId()] = colony;
-
-	//Unlock();
+	m_colonies[colony->GetId()] = colony;
 }
 
 void Empire::AddShip(Ship* ship)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
-	ship->SetEmpireId((int)m_ships.size());
-	m_ships[ship->GetEmpireId()] = ship;
-
-	//Unlock();
+	m_ships[ship->GetId()] = ship;
 }
 
 std::vector<Colony*> Empire::GetColonies()
@@ -67,6 +56,20 @@ std::vector<Colony*> Empire::GetColonies()
 	}
 
 	return colonies;
+}
+
+std::vector<Ship*> Empire::GetShips()
+{
+	std::lock_guard<std::mutex> lock(m_object_mutex);
+
+	std::vector<Ship*> ships;
+
+	for (auto& ship : m_ships)
+	{
+		ships.push_back(ship.second);
+	}
+
+	return ships;
 }
 
 void Empire::DeleteShip(int id)

@@ -63,7 +63,7 @@ Star* SpaceThread::CreateSystem(StarData& data)
 		resources[ResourceType::WATER] = CreateResource(ResourceType::WATER, type, env);
 		resources[ResourceType::RADIOACTIVE] = CreateResource(ResourceType::RADIOACTIVE, type, env);
 
-		Planet* planet = new Planet(i, type, env, star, resources);
+		Planet* planet = new Planet(type, env, star, resources);
 		Universe::GetInstance()->AddPlanet(planet);
 
 		star->AddPlanet(planet);

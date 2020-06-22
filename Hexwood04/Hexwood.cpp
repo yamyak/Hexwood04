@@ -6,10 +6,6 @@
 #include "Framework/TimeEngine.h"
 #include "Reality/Universe.h"
 
-#include <chrono>
-#include <iostream>
-#include <fstream>
-
 
 int main()
 {
@@ -32,20 +28,8 @@ int main()
 
 	Universe::GetInstance();
 
-	auto start = std::chrono::high_resolution_clock::now();
-
 	SpaceEngine spaceEngine;
 	spaceEngine.Create(thread_count, stars);
-
-	auto stop = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-
-	std::ofstream myfile("example.txt");
-	if (myfile.is_open())
-	{
-		myfile << duration.count() << std::endl;
-		myfile.close();
-	}
 
 	LifeEngine lifeEngine(rand());
 	lifeEngine.CreateEmpires();

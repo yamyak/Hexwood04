@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utilities\Logger.cpp" />
     <ClCompile Include="Reality\Colony.cpp" />
     <ClCompile Include="Reality\Empire.cpp" />
     <ClCompile Include="Framework\LifeEngine.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Reality\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utilities\Logger.h" />
     <ClInclude Include="Reality\Colony.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Reality\Empire.h" />

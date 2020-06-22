@@ -16,7 +16,7 @@ std::atomic<int> Ship::m_global_id = 0;
 
 Ship::Ship(Colony* colony, float speed, bool interstellar, Object* obj) : m_source(colony),
 	m_speed(speed), m_x(0), m_y(0), m_z(0), m_interstellar(interstellar), 
-	m_destination(obj), m_empire_id(0), m_started(false)
+	m_destination(obj), m_started(false)
 {
 	SetId(m_global_id++);
 
@@ -95,16 +95,6 @@ void Ship::Run(std::mutex& mutex, std::queue<Object*>& queue)
 
 		m_started = true;
 	}
-}
-
-int Ship::GetEmpireId()
-{
-	return m_empire_id;
-}
-
-void Ship::SetEmpireId(int id)
-{
-	m_empire_id = id;
 }
 
 Colony* Ship::GetSourceColony()

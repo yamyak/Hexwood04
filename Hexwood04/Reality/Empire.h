@@ -23,9 +23,12 @@ public:
 	void AddShip(Ship* ship);
 	void DeleteShip(int id);
 	std::vector<Colony*> GetColonies();
+	std::vector<Ship*> GetShips();
 	bool CheckOccupancy(ObjectType type, int id);
 	void RegisterForOccupancy(ObjectType type, int id);
 	void CleanOccupanyRecords(ObjectType type, int id);
+
+	friend class Logger;
 
 private:
 	std::map<int, Colony*> m_colonies;

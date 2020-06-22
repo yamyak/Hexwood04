@@ -28,7 +28,7 @@ bool LifeEngine::CreateEmpires()
 {
 	int number_empires = (int)m_empire_normal_dist(m_generator);
 	number_empires = 1;
-	int number_stars = Universe::GetInstance()->GetSize();
+	int number_stars = Universe::GetInstance()->GetStarCount();
 	int number_planets = 0;
 	int index = 0;
 
