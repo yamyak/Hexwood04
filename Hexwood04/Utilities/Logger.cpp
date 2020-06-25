@@ -50,13 +50,15 @@ void Logger::RecordData(long long frame_time)
 		int colony_count = Universe::GetInstance()->GetColonyCount();
 		int ship_count = Universe::GetInstance()->GetShipCount();
 
-		m_file << age << "," << frame_time << "," << empire_count << "," << colony_count << "," << ship_count << ",";
+		std::cout << age << std::endl;
+
+		m_file << age << "," << frame_time << "," << empire_count << "," << colony_count << "," << ship_count << "," << std::endl;
 		std::vector<Object*> empires = Universe::GetInstance()->GetObjects(ObjectType::EMPIRE);
 		for (Object* obj : empires)
 		{
 			Empire* empire = static_cast<Empire*>(obj);
 
-			m_file << empire->GetId() << "," << empire->GetColonies().size() << "," << empire->GetShips().size() << 
+			m_file << "," << empire->GetId() << "," << empire->GetColonies().size() << "," << empire->GetShips().size() << 
 				"," << empire->m_potentialEmpireSystems.size() << "," << empire->m_potenialColonySites.size() <<  std::endl;
 		}
 	}

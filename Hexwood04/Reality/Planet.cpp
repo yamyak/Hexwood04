@@ -33,7 +33,6 @@ void Planet::Run(std::mutex& mutex, std::queue<Object*>& queue)
 bool Planet::SetOccupied()
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
 	if (m_occupied)
 	{
@@ -44,8 +43,6 @@ bool Planet::SetOccupied()
 		m_occupied = true;
 		return true;
 	}
-
-	//Unlock();
 }
 
 bool Planet::GetOccupied()
@@ -56,7 +53,6 @@ bool Planet::GetOccupied()
 std::map<ResourceType, float> Planet::CollectResources(std::map<ResourceType, float> needs)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
 	std::map<ResourceType, float> collected;
 	
@@ -73,8 +69,6 @@ std::map<ResourceType, float> Planet::CollectResources(std::map<ResourceType, fl
 			m_resources[need.first].m_current = 0;
 		}
 	}
-
-	//Unlock();
 
 	return collected;
 }

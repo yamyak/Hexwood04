@@ -27,7 +27,7 @@ LifeEngine::~LifeEngine()
 bool LifeEngine::CreateEmpires()
 {
 	int number_empires = (int)m_empire_normal_dist(m_generator);
-	number_empires = 1;
+	number_empires = number_empires < 1 ? 1 : number_empires;
 	int number_stars = Universe::GetInstance()->GetStarCount();
 	int number_planets = 0;
 	int index = 0;
@@ -58,7 +58,8 @@ bool LifeEngine::CreateEmpires()
 						Colony* colony = new Colony(planet, empire, periods, rates);
 						Universe::GetInstance()->AddColony(colony);
 						empire->AddColony(colony);
-						empire->RegisterForOccupancy(ObjectType::STAR, star->GetId());
+						empire->SetColonized(ObjectType::STAR, star->GetId(), colony->GetId());
+						empire->SetColonized(ObjectType::PLANET, planet->GetId(), colony->GetId());
 
 						Universe::GetInstance()->AddEmpire(empire);
 

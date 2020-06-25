@@ -48,7 +48,6 @@ Planet* Colony::GetPlanet()
 void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 {
 	std::lock_guard<std::mutex> lock(m_object_mutex);
-	//Lock();
 
 	std::map<ResourceType, float> collected = m_planet->CollectResources(m_consumption_rates[m_current_period]);
 
@@ -89,8 +88,6 @@ void Colony::Run(std::mutex& mutex, std::queue<Object*>& queue)
 
 	std::lock_guard<std::mutex> queue_lock(mutex);
 	queue.push(static_cast<Object*>(m_planet));
-
-	//Unlock();
 }
 
 bool Colony::FindNextColonyLocation(bool& planet, Object*& obj)
@@ -103,9 +100,8 @@ bool Colony::FindNextColonyLocation(bool& planet, Object*& obj)
 	std::vector<Planet*> planets = m_planet->GetStar()->GetSystem();
 	for (Planet* pl : planets)
 	{
-		if (pl->GetId() != GetId() && !pl->GetOccupied() && m_empire->CheckOccupancy(ObjectType::PLANET, pl->GetId()))
+		if (pl->GetId() != m_planet->GetId() && m_empire->SetColonized(ObjectType::PLANET, pl->GetId(), GetId()))
 		{
-			m_empire->RegisterForOccupancy(ObjectType::PLANET, pl->GetId());
 			planet = true;
 			obj = pl;
 			found = true;
@@ -131,26 +127,28 @@ bool Colony::DeepSkySearch(Object*& obj)
 	float distance = std::numeric_limits<float>::max();
 	obj = nullptr;
 
+	Star* star = nullptr;
+
 	for (Object* star_obj : star_objs)
 	{
-		if (star_obj->GetId() != m_planet->GetStar()->GetId() && m_empire->CheckOccupancy(ObjectType::STAR, star_obj->GetId()))
+		if (star_obj->GetId() != m_planet->GetStar()->GetId() && !m_empire->CheckColonization(ObjectType::STAR, star_obj->GetId()))
 		{
-			Star* star = static_cast<Star*>(star_obj);
+			Star* candidate = static_cast<Star*>(star_obj);
 			float x2, y2, z2;
-			std::tie(x2, y2, z2) = star->GetLocation();
+			std::tie(x2, y2, z2) = candidate->GetLocation();
 
 			float dist = std::sqrt(std::pow((x2 - x1), 2) + std::pow((y2 - y1), 2) + std::pow((z2 - z1), 2));
 			if (distance > dist)
 			{
 				distance = dist;
-				obj = star;
+				star = candidate;
 			}
 		}
 	}
 
-	if (obj != nullptr)
+	if (star != nullptr && m_empire->SetColonized(ObjectType::STAR, star->GetId(), GetId()))
 	{
-		m_empire->RegisterForOccupancy(ObjectType::STAR, obj->GetId());
+		obj = star;
 	}
 
 	return obj != nullptr;

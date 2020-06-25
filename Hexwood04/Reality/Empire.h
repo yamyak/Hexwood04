@@ -24,16 +24,15 @@ public:
 	void DeleteShip(int id);
 	std::vector<Colony*> GetColonies();
 	std::vector<Ship*> GetShips();
-	bool CheckOccupancy(ObjectType type, int id);
-	void RegisterForOccupancy(ObjectType type, int id);
-	void CleanOccupanyRecords(ObjectType type, int id);
+	bool CheckColonization(ObjectType type, int id);
+	bool SetColonized(ObjectType type, int id, int colony_id);
 
 	friend class Logger;
 
 private:
 	std::map<int, Colony*> m_colonies;
 	std::map<int, Ship*> m_ships;
-	std::vector<int> m_potentialEmpireSystems;
-	std::vector<int> m_potenialColonySites;
+	std::map<int, int> m_potentialEmpireSystems;
+	std::map<int, int> m_potenialColonySites;
 };
 

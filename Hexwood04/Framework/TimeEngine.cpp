@@ -53,7 +53,7 @@ void TimeEngine::Start(int thread_count)
 			thr.join();
 		}
 
-		int age = Universe::GetInstance()->GetAge();
+		int count = Universe::GetInstance()->GetColonyCount();
 
 		Universe::GetInstance()->ClearOutGraveyard();
 

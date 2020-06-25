@@ -61,16 +61,24 @@ void Ship::Run(std::mutex& mutex, std::queue<Object*>& queue)
 		{
 			Star* star = static_cast<Star*>(m_destination);
 			std::vector<Planet*> system = star->GetSystem();
+			Colony* colony = new Colony(m_source);
+			bool found = false;
 			for (Planet* planet : system)
 			{
-				if (m_source->GetEmpire()->CheckOccupancy(ObjectType::PLANET, planet->GetId()) && planet->SetOccupied())
+				if (planet->SetOccupied() && m_source->GetEmpire()->SetColonized(ObjectType::PLANET, planet->GetId(), colony->GetId()))
 				{
-					Colony* colony = new Colony(m_source);
 					colony->SetPlanet(planet);
 					Universe::GetInstance()->AddColony(colony);
 					m_source->GetEmpire()->AddColony(colony);
+					found = true;
 					break;
 				}
+			}
+
+			if (!found)
+			{
+				delete colony;
+				colony = nullptr;
 			}
 
 			Universe::GetInstance()->AddToGraveyard(ObjectType::SHIP, GetId());
@@ -83,7 +91,6 @@ void Ship::Run(std::mutex& mutex, std::queue<Object*>& queue)
 			Planet* planet = static_cast<Planet*>(m_destination);
 			if (planet->SetOccupied())
 			{
-				m_source->GetEmpire()->CleanOccupanyRecords(ObjectType::PLANET, planet->GetId());
 				Colony* colony = new Colony(m_source);
 				colony->SetPlanet(planet);
 				Universe::GetInstance()->AddColony(colony);
