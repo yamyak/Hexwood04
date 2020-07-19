@@ -3,6 +3,10 @@
 #include <iostream>
 #include <fstream>
 
+/// <summary>
+/// Opens, closes, and writes out data to log file
+/// Singleton class
+/// </summary>
 class Logger
 {
 public:

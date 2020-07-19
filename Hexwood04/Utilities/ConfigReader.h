@@ -4,6 +4,12 @@
 #include <map>
 #include <vector>
 
+
+
+/// <summary>
+/// Reads in and parses the INI file provided
+/// Singleton class 
+/// </summary>
 class ConfigReader
 {
 public:
@@ -22,6 +28,8 @@ public:
 
 private:
 	static ConfigReader* m_instance;
+
+	// dictionary of key value pairs from config file, separated into diffrent sections
 	std::map<std::string, std::map<std::string, std::string>> m_config_map;
 
 	ConfigReader();

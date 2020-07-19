@@ -2,6 +2,9 @@
 
 class StarTable;
 
+/// <summary>
+/// Spawns threads that populate subsections of the universe with stars and planets 
+/// </summary>
 class SpaceEngine
 {
 public:

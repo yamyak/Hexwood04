@@ -8,6 +8,9 @@
 
 class Planet;
 
+/// <summary>
+/// Star object
+/// </summary>
 class Star : public Object
 {
 public:
@@ -23,10 +26,12 @@ public:
 	std::tuple<float, float, float> GetLocation();
 
 private:
+	// Location of star
 	float m_x;
 	float m_y;
 	float m_z;
 	std::string m_name;
+	// Map of planets in star's system
 	std::map<int, Planet*> m_planets;
 };
 

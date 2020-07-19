@@ -4,6 +4,9 @@
 #include <vector>
 #include <string>
 
+/// <summary>
+/// Reads in a CSV file 
+/// </summary>
 class CSVReader
 {
 public:

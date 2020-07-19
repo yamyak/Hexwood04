@@ -11,6 +11,9 @@ class Ship;
 
 using namespace Constants;
 
+/// <summary>
+/// Empire object
+/// </summary>
 class Empire : public Object
 {
 public:
@@ -30,8 +33,10 @@ public:
 	friend class Logger;
 
 private:
+	// Maps of empire objects
 	std::map<int, Colony*> m_colonies;
 	std::map<int, Ship*> m_ships;
+	// Maps of potential systems and colonies
 	std::map<int, int> m_potentialEmpireSystems;
 	std::map<int, int> m_potenialColonySites;
 };

@@ -11,6 +11,9 @@ using namespace Constants;
 class Planet;
 class Empire;
 
+/// <summary>
+/// Colony object
+/// </summary>
 class Colony : public Object
 {
 public:
@@ -26,10 +29,14 @@ public:
 	Planet* GetPlanet();
 
 private:
+	// map of time period lengths copied from empire
 	std::map<CivilizationPeriod, int> m_period_lengths;
+	// map of resource consumption rates, copied from empire
 	std::map<CivilizationPeriod, std::map<ResourceType, float>> m_consumption_rates;
 	static std::atomic<int> m_global_id;
+	// parent planet
 	Planet* m_planet;
+	// associated empire
 	Empire* m_empire;
 	CivilizationPeriod m_current_period;
 	int m_age;

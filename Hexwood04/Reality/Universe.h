@@ -16,6 +16,10 @@ class Star;
 class Planet;
 class Ship;
 
+/// <summary>
+/// Universe object that contains all other objects
+/// Singleton class
+/// </summary>
 class Universe
 {
 public:
@@ -42,16 +46,18 @@ public:
 private:
 	static Universe* m_instance;
 
+	// object mutex to limit simultaneous processing of object
 	std::mutex m_object_mutex;
 
+	// maps for all objects in Universe
 	std::map<int, Star*> m_stars;
 	std::map<int, Planet*> m_planets;
-
 	std::map<int, Empire*> m_empires;
 	std::map<int, Colony*> m_colonies;
 	std::map<int, Ship*> m_ships;
 
 	int m_age;
+	// vector of ids of objects to be deleted
 	std::vector<std::pair<ObjectType, int>> m_graveyard;
 
 	~Universe();

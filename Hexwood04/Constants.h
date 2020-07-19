@@ -4,9 +4,11 @@
 
 namespace Constants
 {
+	// km/s
 	const float LIGHT_SPEED = 299792.458f;
 	const float SECONDS_PER_YEAR = 31556952;
 
+	// ini file keys
 	const std::string INITIALIZATION = "INITIALIZATION";
 	const std::string SEED = "seed";
 	const std::string STAR_DATABASE = "star_db";
